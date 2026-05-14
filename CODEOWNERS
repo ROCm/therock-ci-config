@@ -1,0 +1,5 @@
+# Copyright Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: MIT
+
+# Default owners for everything in the repo
+* @ROCm/therockinfra

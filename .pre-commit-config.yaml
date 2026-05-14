@@ -1,0 +1,30 @@
+# Copyright Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: MIT
+
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: mixed-line-ending
+
+  - repo: https://github.com/psf/black
+    rev: 25.11.0
+    hooks:
+      - id: black
+
+  - repo: local
+    hooks:
+      - id: test-file-naming
+        name: Enforce *_test.py naming for tests
+        entry: "Test files must use the *_test.py naming convention, not test_*.py"
+        language: fail
+        files: '^tests/test_[^/]*\.py$'
