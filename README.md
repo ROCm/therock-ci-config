@@ -51,6 +51,22 @@ See [runner-config.json](runner-config.json) for the full structure. Key fields 
 2. Once merged, all consuming workflows pick up changes on next run
 3. To rollback, revert the commit or pin workflows to a specific SHA
 
+## Testing New Configurations
+
+Test runner changes before merging:
+
+1. Create a branch in therock-ci-config with your changes
+2. In TheRock, trigger a `workflow_dispatch` with `ci_config_ref` set to your branch/SHA
+3. Validate the CI run uses your new configuration
+4. Once validated, merge your branch to main in therock-ci-config
+
+Example workflow_dispatch inputs:
+
+```
+ci_config_ref: users/yourname/new-runner-weights
+linux_amdgpu_families: gfx94x
+```
+
 ## Traceability
 
 Every workflow run logs the config commit SHA at checkout time. To reproduce a CI run's configuration:
