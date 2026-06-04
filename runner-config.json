@@ -1,6 +1,5 @@
 {
-  "$schema": "./schema.json",
-  "description": "TheRock CI runner configuration",
+  "version": "1",
   "build_runners": {
     "linux": {
       "default": [

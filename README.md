@@ -15,10 +15,41 @@ Workflows fetch this config at runtime:
   with:
     repository: ROCm/therock-ci-config
     path: ci-config
-    # No ref = latest main, SHA logged for traceability
 ```
 
-The checkout logs the exact commit SHA used, ensuring full traceability for debugging CI issues.
+Then load with the versioned API:
+
+```python
+from ci_config_loader import load_config_v1
+
+config = load_config_v1(Path("ci-config"))
+runners = config.build_runners
+families = config.get_gpu_families(["presubmit"])
+```
+
+## Versioning
+
+The config uses semantic versioning for schema compatibility:
+
+```json
+{
+  "version": "1",
+  "build_runners": {...},
+  "gpu_families": {...}
+}
+```
+
+**Version contract:**
+- Consumers call `load_config_v1()` to load version 1 schema
+- Version mismatch raises `ConfigError` with clear message
+- Breaking schema changes bump the version number
+- Old consumers continue working until they upgrade
+
+**Adding a new version:**
+1. Update `runner-config.json` with `"version": "2"`
+2. Add `load_config_v2()` and `ConfigV2` in TheRock's `ci_config_loader.py`
+3. Migrate consumers incrementally
+4. Deprecate old version after migration complete
 
 ## Configuration Files
 
@@ -26,6 +57,7 @@ The checkout logs the exact commit SHA used, ensuring full traceability for debu
 
 Contains GPU family matrix and runner configurations:
 
+- **`version`**: Schema version for API compatibility
 - **`build_runners`**: Build runner labels with weighted distribution (Azure/AWS)
 - **`gpu_families`**: Per-family test runner mappings organized by trigger type:
   - `presubmit`: Runs on pull requests
@@ -34,7 +66,7 @@ Contains GPU family matrix and runner configurations:
 
 ### Schema
 
-See [runner-config.json](runner-config.json) for the full structure. Key fields per GPU family:
+Key fields per GPU family:
 
 | Field | Description |
 |-------|-------------|
@@ -51,21 +83,14 @@ See [runner-config.json](runner-config.json) for the full structure. Key fields 
 2. Once merged, all consuming workflows pick up changes on next run
 3. To rollback, revert the commit or pin workflows to a specific SHA
 
-## Testing New Configurations
+## Testing Changes
 
 Test runner changes before merging:
 
 1. Create a branch in therock-ci-config with your changes
-2. In TheRock, trigger a `workflow_dispatch` with `ci_config_ref` set to your branch/SHA
+2. In TheRock, update `setup_multi_arch.yml` to point to your branch
 3. Validate the CI run uses your new configuration
-4. Once validated, merge your branch to main in therock-ci-config
-
-Example workflow_dispatch inputs:
-
-```
-ci_config_ref: users/yourname/new-runner-weights
-linux_amdgpu_families: gfx94x
-```
+4. Once validated, merge to main
 
 ## Traceability
 
