@@ -2,19 +2,7 @@
 # Copyright Advanced Micro Devices, Inc.
 # SPDX-License-Identifier: MIT
 
-"""Versioned CI configuration API.
-
-This module provides a stable API for loading CI configuration from
-therock-ci-config. Consumers should use versioned functions (e.g.,
-load_config_v1) to ensure compatibility across schema changes.
-
-Usage:
-    from ci_config_api import load_config_v1
-
-    config = load_config_v1()  # Loads from current directory
-    runners = config.build_runners
-    families = config.get_gpu_families(["presubmit"])
-"""
+"""Versioned CI configuration API."""
 
 from __future__ import annotations
 
@@ -36,26 +24,14 @@ class ConfigError(Exception):
 
 @dataclass
 class ConfigV1:
-    """Version 1 configuration schema.
-
-    Attributes:
-        build_runners: Build runner labels with weighted distribution.
-        gpu_families: GPU family configurations by trigger type.
-    """
+    """Version 1 configuration schema."""
 
     build_runners: dict[str, Any]
     gpu_families: dict[str, Any]
     _raw: dict[str, Any]
 
     def get_gpu_families(self, trigger_types: list[str]) -> dict[str, Any]:
-        """Get GPU families for the specified trigger types.
-
-        Args:
-            trigger_types: List of trigger types (presubmit, postsubmit, nightly).
-
-        Returns:
-            Combined dict of GPU family configurations.
-        """
+        """Get GPU families for the specified trigger types."""
         result: dict[str, Any] = {}
         for trigger_type in trigger_types:
             if trigger_type in self.gpu_families:
@@ -65,17 +41,7 @@ class ConfigV1:
 
 
 def load_config_v1(config_path: Path | None = None) -> ConfigV1:
-    """Load version 1 configuration.
-
-    Args:
-        config_path: Path to config directory. Defaults to current directory.
-
-    Returns:
-        ConfigV1 instance with loaded configuration.
-
-    Raises:
-        ConfigError: If config file is missing, invalid, or version mismatch.
-    """
+    """Load version 1 configuration from config_path."""
     if config_path is None:
         config_path = Path(__file__).parent
 
@@ -108,80 +74,35 @@ def load_config_v1(config_path: Path | None = None) -> ConfigV1:
 
 
 def config_exists(config_path: Path | None = None) -> bool:
-    """Check if configuration file exists.
-
-    Args:
-        config_path: Path to config directory. Defaults to current directory.
-
-    Returns:
-        True if runner-config.json exists in the specified path.
-    """
+    """Check if configuration file exists."""
     if config_path is None:
         config_path = Path(__file__).parent
     return (config_path / CONFIG_FILENAME).exists()
 
 
 def get_config_version(config: dict[str, Any]) -> str:
-    """Get the version string from a raw config dict.
-
-    Args:
-        config: Raw configuration dictionary.
-
-    Returns:
-        Version string (defaults to "1" if not specified).
-    """
+    """Get the version string from a raw config dict."""
     return config.get("version", "1")
 
 
 def log_config_version(config: dict[str, Any], config_path: Path) -> None:
-    """Log the configuration version and path for traceability.
-
-    Args:
-        config: Raw configuration dictionary.
-        config_path: Path where config was loaded from.
-    """
+    """Log the configuration version and path for traceability."""
     version = get_config_version(config)
     logging.info(f"Loaded CI config v{version} from: {config_path}")
 
 
-# Convenience functions for working with raw config dicts
-# (backwards compatibility with existing code patterns)
-
-
 def load_runner_config(config_path: Path | None = None) -> dict[str, Any]:
-    """Load configuration and return raw dict.
-
-    Args:
-        config_path: Path to config directory.
-
-    Returns:
-        Raw configuration dictionary.
-    """
+    """Load configuration and return raw dict."""
     return load_config_v1(config_path)._raw
 
 
 def get_build_runners(config: dict[str, Any]) -> dict[str, Any]:
-    """Get build runners from raw config dict.
-
-    Args:
-        config: Raw configuration dictionary.
-
-    Returns:
-        Build runners configuration.
-    """
+    """Get build runners from raw config dict."""
     return config.get("build_runners", {})
 
 
 def get_gpu_families(config: dict[str, Any], trigger_types: list[str]) -> dict[str, Any]:
-    """Get GPU families from raw config dict.
-
-    Args:
-        config: Raw configuration dictionary.
-        trigger_types: List of trigger types to include.
-
-    Returns:
-        Combined GPU family configurations.
-    """
+    """Get GPU families from raw config dict for specified trigger types."""
     gpu_families = config.get("gpu_families", {})
     result: dict[str, Any] = {}
     for trigger_type in trigger_types:
