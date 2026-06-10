@@ -20,11 +20,53 @@ Workflows fetch this config at runtime:
 Then load with the versioned API:
 
 ```python
-from ci_config_loader import load_config_v1
+import sys
+sys.path.insert(0, "ci-config")
 
-config = load_config_v1(Path("ci-config"))
+from ci_config_api import load_config_v1
+
+config = load_config_v1()
 runners = config.build_runners
 families = config.get_gpu_families(["presubmit"])
+```
+
+## API Reference
+
+### Versioned API (Recommended)
+
+```python
+from ci_config_api import load_config_v1, ConfigV1, ConfigError
+
+# Load configuration (auto-detects path when called from ci-config dir)
+config: ConfigV1 = load_config_v1()
+
+# Access build runners
+runners = config.build_runners
+
+# Get GPU families for specific trigger types
+families = config.get_gpu_families(["presubmit", "postsubmit"])
+```
+
+### Convenience Functions
+
+For backwards compatibility with existing code patterns:
+
+```python
+from ci_config_api import (
+    config_exists,
+    load_runner_config,
+    get_build_runners,
+    get_gpu_families,
+    log_config_version,
+)
+
+# Check if config exists
+if config_exists(Path("ci-config")):
+    config = load_runner_config(Path("ci-config"))
+    log_config_version(config, Path("ci-config"))
+
+    runners = get_build_runners(config)
+    families = get_gpu_families(config, ["presubmit"])
 ```
 
 ## Versioning
@@ -47,7 +89,7 @@ The config uses semantic versioning for schema compatibility:
 
 **Adding a new version:**
 1. Update `runner-config.json` with `"version": "2"`
-2. Add `load_config_v2()` and `ConfigV2` in TheRock's `ci_config_loader.py`
+2. Add `load_config_v2()` and `ConfigV2` in `ci_config_api.py`
 3. Migrate consumers incrementally
 4. Deprecate old version after migration complete
 
