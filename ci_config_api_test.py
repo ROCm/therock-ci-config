@@ -10,6 +10,8 @@ import unittest
 from pathlib import Path
 
 from ci_config_api import (
+    LATEST_VERSION,
+    SUPPORTED_VERSIONS,
     ConfigError,
     ConfigV1,
     config_exists,
@@ -41,14 +43,14 @@ class TestLoadConfigV1(unittest.TestCase):
                 load_config_v1(Path(tmpdir))
             self.assertIn("Invalid JSON", str(ctx.exception))
 
-    def test_version_mismatch_raises(self):
+    def test_unsupported_version_raises(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             Path(tmpdir, "runner-config.json").write_text(
                 '{"version": "99", "build_runners": {}, "gpu_families": {}}'
             )
             with self.assertRaises(ConfigError) as ctx:
                 load_config_v1(Path(tmpdir))
-            self.assertIn("version mismatch", str(ctx.exception))
+            self.assertIn("not supported", str(ctx.exception))
 
     def test_missing_keys_raises(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -108,6 +110,26 @@ class TestConvenienceFunctions(unittest.TestCase):
         config = load_runner_config()
         families = get_gpu_families(config, ["presubmit"])
         self.assertIn("gfx94x", families)
+
+
+class TestVersioning(unittest.TestCase):
+    def test_latest_version_in_supported(self):
+        self.assertIn(LATEST_VERSION, SUPPORTED_VERSIONS)
+
+    def test_real_config_version_supported(self):
+        config = load_runner_config()
+        self.assertIn(config["version"], SUPPORTED_VERSIONS)
+
+    def test_v1_loads_v1_json(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_data = {
+                "version": "1",
+                "build_runners": {"linux": {"default": []}},
+                "gpu_families": {"presubmit": {"gfx94x": {"linux": {"family": "test"}}}},
+            }
+            Path(tmpdir, "runner-config.json").write_text(json.dumps(config_data))
+            config = load_config_v1(Path(tmpdir))
+            self.assertEqual(config.build_runners, {"linux": {"default": []}})
 
 
 class TestSchemaValidation(unittest.TestCase):

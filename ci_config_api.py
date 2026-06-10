@@ -2,7 +2,25 @@
 # Copyright Advanced Micro Devices, Inc.
 # SPDX-License-Identifier: MIT
 
-"""Versioned CI configuration API."""
+"""Versioned CI configuration API.
+
+Version Compatibility
+---------------------
+This API provides forward and backward compatibility between workflow versions:
+
+- Single JSON file (runner-config.json) always contains the latest schema
+- Each load_config_vN() function provides a stable interface for version N
+- When JSON schema upgrades, older loaders adapt the new data to their interface
+
+Example: When JSON upgrades from v1 to v2:
+- load_config_v1() reads v2 JSON and transforms it to v1 interface (backward compat)
+- load_config_v2() reads v2 JSON directly
+- Old workflows keep calling load_config_v1() and continue working
+
+Usage in workflows:
+    from ci_config_api import load_config_v1
+    config = load_config_v1()
+"""
 
 from __future__ import annotations
 
@@ -12,7 +30,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-CURRENT_VERSION = "1"
+# Supported versions: loaders exist for all versions in this list
+SUPPORTED_VERSIONS = ["1"]
+LATEST_VERSION = "1"
 CONFIG_FILENAME = "runner-config.json"
 
 
@@ -20,6 +40,28 @@ class ConfigError(Exception):
     """Raised when configuration loading or validation fails."""
 
     pass
+
+
+def _load_raw_config(config_path: Path | None = None) -> dict[str, Any]:
+    """Load raw JSON config file."""
+    if config_path is None:
+        config_path = Path(__file__).parent
+
+    config_file = config_path / CONFIG_FILENAME
+
+    if not config_file.exists():
+        raise ConfigError(f"Config not found: {config_file}")
+
+    try:
+        with open(config_file) as f:
+            return json.load(f)
+    except json.JSONDecodeError as e:
+        raise ConfigError(f"Invalid JSON in {config_file}: {e}")
+
+
+# =============================================================================
+# Version 1 API
+# =============================================================================
 
 
 @dataclass
@@ -40,37 +82,71 @@ class ConfigV1:
         return result
 
 
-def load_config_v1(config_path: Path | None = None) -> ConfigV1:
-    """Load version 1 configuration from config_path."""
-    if config_path is None:
-        config_path = Path(__file__).parent
-
-    config_file = config_path / CONFIG_FILENAME
-
-    if not config_file.exists():
-        raise ConfigError(f"Config not found: {config_file}")
-
-    try:
-        with open(config_file) as f:
-            raw = json.load(f)
-    except json.JSONDecodeError as e:
-        raise ConfigError(f"Invalid JSON in {config_file}: {e}")
-
+def _adapt_to_v1(raw: dict[str, Any]) -> ConfigV1:
+    """Adapt any supported JSON version to V1 interface."""
     version = raw.get("version", "1")
-    if version != CURRENT_VERSION:
-        raise ConfigError(
-            f"Config version mismatch: got {version}, expected {CURRENT_VERSION}"
+
+    if version == "1":
+        # Direct load
+        missing = [k for k in ("build_runners", "gpu_families") if k not in raw]
+        if missing:
+            raise ConfigError(f"Config missing required keys: {missing}")
+        return ConfigV1(
+            build_runners=raw["build_runners"],
+            gpu_families=raw["gpu_families"],
+            _raw=raw,
         )
 
-    missing = [k for k in ("build_runners", "gpu_families") if k not in raw]
-    if missing:
-        raise ConfigError(f"Config missing required keys: {missing}")
+    # Future: when v2 exists, transform v2 data to v1 interface here
+    # if version == "2":
+    #     return ConfigV1(
+    #         build_runners=raw["build_runners"],
+    #         gpu_families=_transform_v2_families_to_v1(raw),
+    #         _raw=raw,
+    #     )
 
-    return ConfigV1(
-        build_runners=raw["build_runners"],
-        gpu_families=raw["gpu_families"],
-        _raw=raw,
+    raise ConfigError(
+        f"Config version {version} not supported by load_config_v1(). "
+        f"Supported: {SUPPORTED_VERSIONS}"
     )
+
+
+def load_config_v1(config_path: Path | None = None) -> ConfigV1:
+    """Load configuration with V1 interface (backward compatible)."""
+    raw = _load_raw_config(config_path)
+    return _adapt_to_v1(raw)
+
+
+# =============================================================================
+# Future: Version 2 API (uncomment when v2 schema is ready)
+# =============================================================================
+
+# @dataclass
+# class ConfigV2:
+#     """Version 2 configuration schema."""
+#     build_runners: dict[str, Any]
+#     gfx_targets: dict[str, Any]  # Example: renamed from gpu_families
+#     _raw: dict[str, Any]
+#
+#     def get_targets(self, trigger_types: list[str]) -> dict[str, Any]:
+#         ...
+#
+# def _adapt_to_v2(raw: dict[str, Any]) -> ConfigV2:
+#     """Adapt any supported JSON version to V2 interface."""
+#     version = raw.get("version", "1")
+#     if version == "2":
+#         return ConfigV2(...)  # Direct load
+#     raise ConfigError(f"Config version {version} cannot be loaded as V2")
+#
+# def load_config_v2(config_path: Path | None = None) -> ConfigV2:
+#     """Load configuration with V2 interface."""
+#     raw = _load_raw_config(config_path)
+#     return _adapt_to_v2(raw)
+
+
+# =============================================================================
+# Convenience functions (backward compat with existing code patterns)
+# =============================================================================
 
 
 def config_exists(config_path: Path | None = None) -> bool:
@@ -119,7 +195,7 @@ if __name__ == "__main__":
 
     try:
         config = load_config_v1(path)
-        print(f"Loaded config v{CURRENT_VERSION}")
+        print(f"Loaded config (latest: v{LATEST_VERSION})")
         print(f"Build runners: {list(config.build_runners.keys())}")
         print(f"GPU families (presubmit): {list(config.get_gpu_families(['presubmit']).keys())}")
     except ConfigError as e:

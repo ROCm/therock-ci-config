@@ -30,6 +30,35 @@ runners = config.build_runners
 families = config.get_gpu_families(["presubmit"])
 ```
 
+## Version Compatibility
+
+The API provides forward and backward compatibility between workflow versions:
+
+```
+runner-config.json  ← Single file, always latest schema
+ci_config_api.py    ← Versioned loaders: load_config_v1(), load_config_v2(), ...
+```
+
+**How it works:**
+
+| JSON Version | load_config_v1() | load_config_v2() |
+|--------------|------------------|------------------|
+| v1 (current) | Direct load      | N/A yet          |
+| v2 (future)  | Adapts to v1     | Direct load      |
+| v3 (future)  | Adapts to v1     | Adapts to v2     |
+
+- Old workflows keep calling `load_config_v1()` and continue working
+- New workflows call `load_config_v2()` when ready
+- Each loader guarantees a stable interface regardless of JSON version
+
+**Adding a new version:**
+
+1. Update `runner-config.json` with new schema (e.g., `"version": "2"`)
+2. Add `ConfigV2` dataclass and `load_config_v2()` function
+3. Update `_adapt_to_v1()` to transform v2 data to v1 interface
+4. Add `"2"` to `SUPPORTED_VERSIONS`
+5. Migrate workflows incrementally from v1 to v2
+
 ## API Reference
 
 ### Versioned API (Recommended)
@@ -37,13 +66,8 @@ families = config.get_gpu_families(["presubmit"])
 ```python
 from ci_config_api import load_config_v1, ConfigV1, ConfigError
 
-# Load configuration (auto-detects path when called from ci-config dir)
 config: ConfigV1 = load_config_v1()
-
-# Access build runners
 runners = config.build_runners
-
-# Get GPU families for specific trigger types
 families = config.get_gpu_families(["presubmit", "postsubmit"])
 ```
 
@@ -60,38 +84,12 @@ from ci_config_api import (
     log_config_version,
 )
 
-# Check if config exists
 if config_exists(Path("ci-config")):
     config = load_runner_config(Path("ci-config"))
     log_config_version(config, Path("ci-config"))
-
     runners = get_build_runners(config)
     families = get_gpu_families(config, ["presubmit"])
 ```
-
-## Versioning
-
-The config uses semantic versioning for schema compatibility:
-
-```json
-{
-  "version": "1",
-  "build_runners": {...},
-  "gpu_families": {...}
-}
-```
-
-**Version contract:**
-- Consumers call `load_config_v1()` to load version 1 schema
-- Version mismatch raises `ConfigError` with clear message
-- Breaking schema changes bump the version number
-- Old consumers continue working until they upgrade
-
-**Adding a new version:**
-1. Update `runner-config.json` with `"version": "2"`
-2. Add `load_config_v2()` and `ConfigV2` in `ci_config_api.py`
-3. Migrate consumers incrementally
-4. Deprecate old version after migration complete
 
 ## Configuration Files
 
@@ -119,20 +117,19 @@ Key fields per GPU family:
 | `fetch-gfx-targets` | GFX targets for split artifact fetching |
 | `build_variants` | Build variants to test (release, asan, tsan) |
 
+## Testing
+
+Run tests locally:
+
+```bash
+python -m pytest ci_config_api_test.py -v
+```
+
 ## Making Changes
 
 1. Create a PR with your runner config changes
 2. Once merged, all consuming workflows pick up changes on next run
 3. To rollback, revert the commit or pin workflows to a specific SHA
-
-## Testing Changes
-
-Test runner changes before merging:
-
-1. Create a branch in therock-ci-config with your changes
-2. In TheRock, update `setup_multi_arch.yml` to point to your branch
-3. Validate the CI run uses your new configuration
-4. Once validated, merge to main
 
 ## Traceability
 
