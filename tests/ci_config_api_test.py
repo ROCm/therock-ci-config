@@ -125,7 +125,9 @@ class TestVersioning(unittest.TestCase):
             config_data = {
                 "version": "1",
                 "build_runners": {"linux": {"default": []}},
-                "gpu_families": {"presubmit": {"gfx94x": {"linux": {"family": "test"}}}},
+                "gpu_families": {
+                    "presubmit": {"gfx94x": {"linux": {"family": "test"}}}
+                },
             }
             Path(tmpdir, "runner-config.json").write_text(json.dumps(config_data))
             config = load_config_v1(Path(tmpdir))

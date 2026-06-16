@@ -177,7 +177,9 @@ def get_build_runners(config: dict[str, Any]) -> dict[str, Any]:
     return config.get("build_runners", {})
 
 
-def get_gpu_families(config: dict[str, Any], trigger_types: list[str]) -> dict[str, Any]:
+def get_gpu_families(
+    config: dict[str, Any], trigger_types: list[str]
+) -> dict[str, Any]:
     """Get GPU families from raw config dict for specified trigger types."""
     gpu_families = config.get("gpu_families", {})
     result: dict[str, Any] = {}
@@ -197,7 +199,9 @@ if __name__ == "__main__":
         config = load_config_v1(path)
         print(f"Loaded config (latest: v{LATEST_VERSION})")
         print(f"Build runners: {list(config.build_runners.keys())}")
-        print(f"GPU families (presubmit): {list(config.get_gpu_families(['presubmit']).keys())}")
+        print(
+            f"GPU families (presubmit): {list(config.get_gpu_families(['presubmit']).keys())}"
+        )
     except ConfigError as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
