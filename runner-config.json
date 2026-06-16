@@ -29,7 +29,7 @@
           "test-runs-on-sandbox": "",
           "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
           "test-runs-on-multi-gpu-labels": [
-            {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 0.78},
+            {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 0.79},
             {"label": "linux-gfx942-8gpu-core42-ossci-rocm", "weight": 0.21}
           ],
           "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm",

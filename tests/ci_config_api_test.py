@@ -153,6 +153,31 @@ class TestSchemaValidation(unittest.TestCase):
                     self.assertIn("family", settings)
                     self.assertIn("fetch-gfx-targets", settings)
 
+    def test_test_runs_on_labels_weights_sum_to_one(self):
+        """Verify that test-runs-on-labels weights sum to 1.0 for load balancing."""
+        config = load_config_v1()
+        for trigger_type, families in config.gpu_families.items():
+            for family_name, platforms in families.items():
+                for platform, settings in platforms.items():
+                    if "test-runs-on-labels" in settings:
+                        labels = settings["test-runs-on-labels"]
+                        total_weight = sum(label["weight"] for label in labels)
+                        self.assertAlmostEqual(
+                            total_weight,
+                            1.0,
+                            places=2,
+                            msg=f"{trigger_type}/{family_name}/{platform} test-runs-on-labels weights sum to {total_weight}, expected 1.0",
+                        )
+                    if "test-runs-on-multi-gpu-labels" in settings:
+                        labels = settings["test-runs-on-multi-gpu-labels"]
+                        total_weight = sum(label["weight"] for label in labels)
+                        self.assertAlmostEqual(
+                            total_weight,
+                            1.0,
+                            places=2,
+                            msg=f"{trigger_type}/{family_name}/{platform} test-runs-on-multi-gpu-labels weights sum to {total_weight}, expected 1.0",
+                        )
+
 
 if __name__ == "__main__":
     unittest.main()
