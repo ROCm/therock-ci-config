@@ -26,7 +26,7 @@
             {"label": "linux-gfx942-1gpu-core42-ossci-rocm", "weight": 0.736},
             {"label": "linux-gfx942-1gpu-ossci-rocm", "weight": 0.147}
           ],
-          "test-runs-on-sandbox": "",
+          "test-runs-on-sandbox": "linux-mi325-gpu-rocm-cpu-sandbox",
           "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
           "test-runs-on-multi-gpu-labels": [
             {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 0.79},
@@ -35,7 +35,7 @@
           "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm",
           "family": "gfx94X-dcgpu",
           "fetch-gfx-targets": ["gfx942"],
-          "build_variants": ["release", "asan", "tsan"]
+          "build_variants": ["release", "asan", "host-asan", "tsan"]
         }
       },
       "gfx110x": {
