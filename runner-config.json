@@ -240,6 +240,14 @@
           "fetch-gfx-targets": [],
           "build_variants": ["release"]
         }
+      },
+      "gfx125x": {
+        "linux": {
+          "test-runs-on": "",
+          "family": "gfx125X-dcgpu",
+          "fetch-gfx-targets": [],
+          "build_variants": ["release"]
+        }
       }
     }
   }
