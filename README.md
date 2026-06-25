@@ -2,6 +2,8 @@
 
 Centralized CI configuration for ROCm builds - GPU runner mappings, build runner weights, and test infrastructure settings.
 
+- **[Testing changes](TESTING.md)** - How to test config changes before merging
+
 ## Overview
 
 This repository provides dynamic CI configuration that can be updated independently of TheRock, rocm-libraries, and rocm-systems. Changes here propagate instantly to all consuming workflows without requiring PRs in each repository.
