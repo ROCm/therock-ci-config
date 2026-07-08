@@ -105,7 +105,8 @@
           "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
           "family": "gfx950-dcgpu",
           "fetch-gfx-targets": ["gfx950"],
-          "build_variants": ["release", "asan", "tsan"]
+          "build_variants": ["release", "asan", "tsan"],
+          "submodule_bump_tests_only": true
         }
       }
     },
