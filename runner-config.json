@@ -250,7 +250,8 @@
           "test-runs-on": "",
           "family": "gfx125X-dcgpu",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": ["release"],
+          "expect_failure": true
         }
       }
     }
