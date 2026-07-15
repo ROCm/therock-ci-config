@@ -145,6 +145,18 @@ class TestSchemaValidation(unittest.TestCase):
                     self.assertIn("label", label_config)
                     self.assertIn("weight", label_config)
 
+    def test_build_runner_weights_sum_to_one(self):
+        config = load_config_v1()
+        for platform, variants in config.build_runners.items():
+            for variant, labels in variants.items():
+                total_weight = sum(label["weight"] for label in labels)
+                self.assertAlmostEqual(
+                    total_weight,
+                    1.0,
+                    places=2,
+                    msg=f"{platform}/{variant} build runner weights sum to {total_weight}, expected 1.0",
+                )
+
     def test_gpu_families_structure(self):
         config = load_config_v1()
         for trigger_type, families in config.gpu_families.items():
