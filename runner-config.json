@@ -22,8 +22,12 @@
     "windows": {
       "default": [
         {
+          "label": "azure-windows-scale-rocm",
+          "weight": 0.5
+        },
+        {
           "label": "aws-windows-scale-rocm-prod",
-          "weight": 1.0
+          "weight": 0.5
         }
       ]
     }
