@@ -3,17 +3,28 @@
   "build_runners": {
     "linux": {
       "default": [
-        {"label": "azure-linux-scale-rocm", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prod", "weight": 1.0}
+        {
+          "label": "azure-linux-scale-rocm",
+          "weight": 0.0
+        },
+        {
+          "label": "aws-linux-scale-rocm-prod",
+          "weight": 1.0
+        }
       ],
       "sanitizer": [
-        {"label": "azure-linux-scale-rocm-heavy-ramdisk", "weight": 1.0}
+        {
+          "label": "azure-linux-scale-rocm-heavy-ramdisk",
+          "weight": 1.0
+        }
       ]
     },
     "windows": {
       "default": [
-        {"label": "azure-windows-scale-rocm", "weight": 0.9},
-        {"label": "aws-windows-scale-rocm-prod", "weight": 0.1}
+        {
+          "label": "aws-windows-scale-rocm-prod",
+          "weight": 1.0
+        }
       ]
     }
   },
@@ -28,18 +39,37 @@
               "weight": 0.1,
               "count": 5
             },
-            {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.8, "count": 28},
-            {"label": "linux-gfx942-1gpu-ossci-rocm", "weight": 0.1, "count": 5}
+            {
+              "label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
+              "weight": 0.8,
+              "count": 28
+            },
+            {
+              "label": "linux-gfx942-1gpu-ossci-rocm",
+              "weight": 0.1,
+              "count": 5
+            }
           ],
           "test-runs-on-sandbox": "linux-mi325-gpu-rocm-cpu-sandbox",
           "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
           "test-runs-on-multi-gpu-labels": [
-            {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 1.0, "count": 10}
+            {
+              "label": "linux-gfx942-8gpu-ossci-rocm",
+              "weight": 1.0,
+              "count": 10
+            }
           ],
           "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm",
           "family": "gfx94X-dcgpu",
-          "fetch-gfx-targets": ["gfx942"],
-          "build_variants": ["release", "asan", "host-asan", "tsan"]
+          "fetch-gfx-targets": [
+            "gfx942"
+          ],
+          "build_variants": [
+            "release",
+            "asan",
+            "host-asan",
+            "tsan"
+          ]
         }
       },
       "gfx110x": {
@@ -48,15 +78,24 @@
           "family": "gfx110X-all",
           "fetch-gfx-targets": [],
           "bypass_tests_for_releases": true,
-          "build_variants": ["release"],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         },
         "windows": {
           "test-runs-on": "windows-gfx110X-gpu-rocm",
           "family": "gfx110X-all",
-          "fetch-gfx-targets": ["gfx1100", "gfx1101", "gfx1102", "gfx1103"],
+          "fetch-gfx-targets": [
+            "gfx1100",
+            "gfx1101",
+            "gfx1102",
+            "gfx1103"
+          ],
           "bypass_tests_for_releases": true,
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx1151": {
@@ -66,17 +105,25 @@
             "oem": "linux-strix-halo-gpu-rocm-oem"
           },
           "family": "gfx1151",
-          "fetch-gfx-targets": ["gfx1151"],
+          "fetch-gfx-targets": [
+            "gfx1151"
+          ],
           "bypass_tests_for_releases": true,
-          "build_variants": ["release"],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         },
         "windows": {
           "test-runs-on": "windows-gfx1151-gpu-rocm",
           "benchmark-runs-on": "windows-gfx1151-gpu-rocm",
           "family": "gfx1151",
-          "fetch-gfx-targets": ["gfx1151"],
-          "build_variants": ["release"],
+          "fetch-gfx-targets": [
+            "gfx1151"
+          ],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         }
       },
@@ -84,17 +131,27 @@
         "linux": {
           "test-runs-on": "linux-gfx120X-gpu-rocm",
           "family": "gfx120X-all",
-          "fetch-gfx-targets": ["gfx1200", "gfx1201"],
+          "fetch-gfx-targets": [
+            "gfx1200",
+            "gfx1201"
+          ],
           "bypass_tests_for_releases": true,
-          "build_variants": ["release"],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         },
         "windows": {
           "test-runs-on": "windows-gfx120X-gpu-rocm",
           "family": "gfx120X-all",
-          "fetch-gfx-targets": ["gfx1200", "gfx1201"],
+          "fetch-gfx-targets": [
+            "gfx1200",
+            "gfx1201"
+          ],
           "bypass_tests_for_releases": true,
-          "build_variants": ["release"],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         }
       }
@@ -105,8 +162,14 @@
           "test-runs-on": "linux-gfx950-1gpu-ccs-ossci-rocm",
           "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
           "family": "gfx950-dcgpu",
-          "fetch-gfx-targets": ["gfx950"],
-          "build_variants": ["release", "asan", "tsan"],
+          "fetch-gfx-targets": [
+            "gfx950"
+          ],
+          "build_variants": [
+            "release",
+            "asan",
+            "tsan"
+          ],
           "submodule_bump_tests_only": true
         }
       }
@@ -118,13 +181,17 @@
           "family": "gfx900",
           "fetch-gfx-targets": [],
           "sanity_check_only_for_family": true,
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx900",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx906": {
@@ -133,13 +200,17 @@
           "family": "gfx906",
           "fetch-gfx-targets": [],
           "sanity_check_only_for_family": true,
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx906",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx908": {
@@ -148,28 +219,38 @@
           "family": "gfx908",
           "fetch-gfx-targets": [],
           "sanity_check_only_for_family": true,
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx908",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx90a": {
         "linux": {
           "test-runs-on": "linux-gfx90a-gpu-rocm",
           "family": "gfx90a",
-          "fetch-gfx-targets": ["gfx90a"],
-          "build_variants": ["release"],
+          "fetch-gfx-targets": [
+            "gfx90a"
+          ],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx90a",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx101x": {
@@ -177,28 +258,38 @@
           "test-runs-on": "",
           "family": "gfx101X-dgpu",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx101X-dgpu",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx103x": {
         "linux": {
           "test-runs-on": "linux-gfx1030-gpu-rocm",
           "family": "gfx103X-all",
-          "fetch-gfx-targets": ["gfx1030"],
-          "build_variants": ["release"],
+          "fetch-gfx-targets": [
+            "gfx1030"
+          ],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         },
         "windows": {
           "test-runs-on": "windows-gfx1030-gpu-rocm",
           "family": "gfx103X-all",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         }
       },
@@ -207,14 +298,18 @@
           "test-runs-on": "linux-gfx1150-gpu-rocm",
           "family": "gfx1150",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx1150",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx1152": {
@@ -222,13 +317,17 @@
           "test-runs-on": "",
           "family": "gfx1152",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx1152",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx1153": {
@@ -236,14 +335,18 @@
           "test-runs-on": "linux-gfx1153-gpu-rocm",
           "family": "gfx1153",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"],
+          "build_variants": [
+            "release"
+          ],
           "nightly_check_only_for_family": true
         },
         "windows": {
           "test-runs-on": "",
           "family": "gfx1153",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       },
       "gfx125x": {
@@ -251,7 +354,9 @@
           "test-runs-on": "",
           "family": "gfx125X-dcgpu",
           "fetch-gfx-targets": [],
-          "build_variants": ["release"]
+          "build_variants": [
+            "release"
+          ]
         }
       }
     }
