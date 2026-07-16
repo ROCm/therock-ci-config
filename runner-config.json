@@ -97,6 +97,14 @@
           "build_variants": ["release"],
           "nightly_check_only_for_family": true
         }
+      },
+      "gfx125x": {
+        "linux": {
+          "test-runs-on": "",
+          "family": "gfx125X-dcgpu",
+          "fetch-gfx-targets": [],
+          "build_variants": ["release"]
+        }
       }
     },
     "postsubmit": {
@@ -242,14 +250,6 @@
         "windows": {
           "test-runs-on": "",
           "family": "gfx1153",
-          "fetch-gfx-targets": [],
-          "build_variants": ["release"]
-        }
-      },
-      "gfx125x": {
-        "linux": {
-          "test-runs-on": "",
-          "family": "gfx125X-dcgpu",
           "fetch-gfx-targets": [],
           "build_variants": ["release"]
         }

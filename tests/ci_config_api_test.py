@@ -69,6 +69,18 @@ class TestConfigV1(unittest.TestCase):
         self.assertIn("gfx94x", families)
         self.assertIn("linux", families["gfx94x"])
 
+    def test_gfx125x_is_presubmit_build_only(self):
+        families = self.config.get_gpu_families(["presubmit"])
+        self.assertEqual(
+            families["gfx125x"]["linux"],
+            {
+                "test-runs-on": "",
+                "family": "gfx125X-dcgpu",
+                "fetch-gfx-targets": [],
+                "build_variants": ["release"],
+            },
+        )
+
     def test_get_gpu_families_multiple(self):
         families = self.config.get_gpu_families(["presubmit", "postsubmit"])
         self.assertIn("gfx94x", families)
