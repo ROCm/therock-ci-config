@@ -18,6 +18,8 @@ from ci_config_api import (
     get_build_runners,
     get_config_version,
     get_gpu_families,
+    get_gpu_runner_labels,
+    get_runner_labels,
     load_config_v1,
     load_runner_config,
 )
@@ -110,6 +112,18 @@ class TestConvenienceFunctions(unittest.TestCase):
         config = load_runner_config()
         families = get_gpu_families(config, ["presubmit"])
         self.assertIn("gfx94x", families)
+
+    def test_get_gpu_runner_labels(self):
+        config = load_runner_config()
+        labels = get_gpu_runner_labels(config)
+        self.assertIn("gfx94x", labels)
+        self.assertIn("linux", labels["gfx94x"])
+        self.assertIn("test-runs-on", labels["gfx94x"]["linux"])
+
+    def test_get_runner_labels_deprecated(self):
+        """Verify deprecated get_runner_labels returns same as get_gpu_runner_labels."""
+        config = load_runner_config()
+        self.assertEqual(get_runner_labels(config), get_gpu_runner_labels(config))
 
 
 class TestVersioning(unittest.TestCase):

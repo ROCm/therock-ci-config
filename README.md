@@ -105,11 +105,19 @@ Contains GPU family matrix and runner configurations:
   - `presubmit`: Runs on pull requests
   - `postsubmit`: Runs on pushes to main
   - `nightly`: Runs on scheduled triggers
-- **`runner_labels`**: Runner-only configuration organized by family name (preferred for new code)
+- **`gpu_runner_labels`**: Runner-only configuration organized by GPU family name (preferred for new code)
 
 ### Schema
 
-**`runner_labels`** (preferred for new code needing only runner config):
+**`build_runners`**:
+
+| Field | Description |
+|-------|-------------|
+| `linux.default` | Weighted runner list for standard Linux builds |
+| `linux.sanitizer` | Weighted runner list for sanitizer builds (asan, tsan) |
+| `windows.default` | Weighted runner list for Windows builds |
+
+**`gpu_runner_labels`** (preferred for new code needing only runner config):
 
 | Field | Description |
 |-------|-------------|

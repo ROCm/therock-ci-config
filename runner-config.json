@@ -255,7 +255,7 @@
       }
     }
   },
-  "runner_labels": {
+  "gpu_runner_labels": {
     "gfx94x": {
       "linux": {
         "test-runs-on": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",

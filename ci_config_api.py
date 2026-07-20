@@ -194,17 +194,22 @@ def get_gpu_families(
     return result
 
 
-def get_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
-    """Get runner labels from config dict.
+def get_gpu_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
+    """Get GPU runner labels from config dict.
 
-    Returns the runner_labels section which contains only runner-related
+    Returns the gpu_runner_labels section which contains only runner-related
     configuration (test-runs-on, benchmark-runs-on, etc.) organized by
-    family name and platform.
+    GPU family name and platform.
 
     New code should prefer this over get_gpu_families() when only runner
     labels are needed, as it provides a simpler flat structure.
     """
-    return config.get("runner_labels", {})
+    return config.get("gpu_runner_labels", {})
+
+
+def get_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
+    """Deprecated: Use get_gpu_runner_labels() instead."""
+    return get_gpu_runner_labels(config)
 
 
 if __name__ == "__main__":
