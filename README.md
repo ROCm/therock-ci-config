@@ -101,12 +101,33 @@ Contains GPU family matrix and runner configurations:
 
 - **`version`**: Schema version for API compatibility
 - **`build_runners`**: Build runner labels with weighted distribution (Azure/AWS)
-- **`gpu_families`**: Per-family test runner mappings organized by trigger type:
+- **`gpu_families`**: Full per-family configuration organized by trigger type (legacy, for backward compat)
   - `presubmit`: Runs on pull requests
   - `postsubmit`: Runs on pushes to main
   - `nightly`: Runs on scheduled triggers
+- **`gpu_runner_labels`**: Runner-only configuration organized by GPU family name (preferred for new code)
 
 ### Schema
+
+**`build_runners`**:
+
+| Field | Description |
+|-------|-------------|
+| `linux.default` | Weighted runner list for standard Linux builds |
+| `linux.sanitizer` | Weighted runner list for sanitizer builds (asan, tsan) |
+| `windows.default` | Weighted runner list for Windows builds |
+
+**`gpu_runner_labels`** (preferred for new code needing only runner config):
+
+| Field | Description |
+|-------|-------------|
+| `test-runs-on` | GitHub runner label for tests |
+| `test-runs-on-labels` | Weighted runner list for load balancing |
+| `test-runs-on-sandbox` | Sandbox runner label |
+| `test-runs-on-multi-gpu` | Runner label for multi-GPU tests |
+| `benchmark-runs-on` | Runner label for benchmarks |
+
+**`gpu_families`** (legacy, includes build config):
 
 Key fields per GPU family:
 

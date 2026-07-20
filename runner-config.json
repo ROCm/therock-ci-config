@@ -255,5 +255,80 @@
         }
       }
     }
+  },
+  "gpu_runner_labels": {
+    "gfx94x": {
+      "linux": {
+        "test-runs-on": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
+        "test-runs-on-labels": [
+          {"label": "linux-gfx942-1gpu-ccs-ossci-rocm", "weight": 0.1, "count": 5},
+          {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.8, "count": 28},
+          {"label": "linux-gfx942-1gpu-ossci-rocm", "weight": 0.1, "count": 5}
+        ],
+        "test-runs-on-sandbox": "linux-mi325-gpu-rocm-cpu-sandbox",
+        "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
+        "test-runs-on-multi-gpu-labels": [
+          {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 1.0, "count": 10}
+        ],
+        "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
+      }
+    },
+    "gfx950": {
+      "linux": {
+        "test-runs-on": "linux-gfx950-1gpu-ccs-ossci-rocm",
+        "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm"
+      }
+    },
+    "gfx110x": {
+      "linux": {
+        "test-runs-on": "linux-gfx110X-gpu-rocm"
+      },
+      "windows": {
+        "test-runs-on": "windows-gfx110X-gpu-rocm"
+      }
+    },
+    "gfx1151": {
+      "linux": {
+        "test-runs-on": "linux-gfx1151-gpu-rocm",
+        "test-runs-on-kernel": {
+          "oem": "linux-strix-halo-gpu-rocm-oem"
+        }
+      },
+      "windows": {
+        "test-runs-on": "windows-gfx1151-gpu-rocm",
+        "benchmark-runs-on": "windows-gfx1151-gpu-rocm"
+      }
+    },
+    "gfx120x": {
+      "linux": {
+        "test-runs-on": "linux-gfx120X-gpu-rocm"
+      },
+      "windows": {
+        "test-runs-on": "windows-gfx120X-gpu-rocm"
+      }
+    },
+    "gfx90a": {
+      "linux": {
+        "test-runs-on": "linux-gfx90a-gpu-rocm"
+      }
+    },
+    "gfx103x": {
+      "linux": {
+        "test-runs-on": "linux-gfx1030-gpu-rocm"
+      },
+      "windows": {
+        "test-runs-on": "windows-gfx1030-gpu-rocm"
+      }
+    },
+    "gfx1150": {
+      "linux": {
+        "test-runs-on": "linux-gfx1150-gpu-rocm"
+      }
+    },
+    "gfx1153": {
+      "linux": {
+        "test-runs-on": "linux-gfx1153-gpu-rocm"
+      }
+    }
   }
 }

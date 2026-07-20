@@ -180,7 +180,11 @@ def get_build_runners(config: dict[str, Any]) -> dict[str, Any]:
 def get_gpu_families(
     config: dict[str, Any], trigger_types: list[str]
 ) -> dict[str, Any]:
-    """Get GPU families from raw config dict for specified trigger types."""
+    """Get GPU families from raw config dict for specified trigger types.
+
+    Note: For new code that only needs runner labels, prefer get_runner_labels()
+    which provides a simpler flat structure without trigger type organization.
+    """
     gpu_families = config.get("gpu_families", {})
     result: dict[str, Any] = {}
     for trigger_type in trigger_types:
@@ -188,6 +192,24 @@ def get_gpu_families(
             for name, cfg in gpu_families[trigger_type].items():
                 result[name] = cfg
     return result
+
+
+def get_gpu_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
+    """Get GPU runner labels from config dict.
+
+    Returns the gpu_runner_labels section which contains only runner-related
+    configuration (test-runs-on, benchmark-runs-on, etc.) organized by
+    GPU family name and platform.
+
+    New code should prefer this over get_gpu_families() when only runner
+    labels are needed, as it provides a simpler flat structure.
+    """
+    return config.get("gpu_runner_labels", {})
+
+
+def get_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
+    """Deprecated: Use get_gpu_runner_labels() instead."""
+    return get_gpu_runner_labels(config)
 
 
 if __name__ == "__main__":
