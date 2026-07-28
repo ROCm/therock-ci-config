@@ -26,11 +26,10 @@
           "test-runs-on-labels": [
             {
               "label": "linux-gfx942-1gpu-ccs-ossci-rocm",
-              "weight": 0.1,
+              "weight": 0.15,
               "count": 5
             },
-            {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.8, "count": 28},
-            {"label": "linux-gfx942-1gpu-ossci-rocm", "weight": 0.1, "count": 5}
+            {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.85, "count": 28}
           ],
           "test-runs-on-sandbox": "linux-mi325-gpu-rocm-cpu-sandbox",
           "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
@@ -262,9 +261,8 @@
       "linux": {
         "test-runs-on": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx942-1gpu-ccs-ossci-rocm", "weight": 0.1, "count": 5},
-          {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.8, "count": 28},
-          {"label": "linux-gfx942-1gpu-ossci-rocm", "weight": 0.1, "count": 5}
+          {"label": "linux-gfx942-1gpu-ccs-ossci-rocm", "weight": 0.15, "count": 5},
+          {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.85, "count": 28}
         ],
         "test-runs-on-sandbox": "linux-mi325-gpu-rocm-cpu-sandbox",
         "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
