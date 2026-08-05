@@ -133,6 +133,12 @@
           "fetch-gfx-targets": ["gfx90a"],
           "build_variants": ["release"],
           "submodule_bump_tests_only": true
+        },
+        "windows": {
+          "test-runs-on": "",
+          "family": "gfx90a",
+          "fetch-gfx-targets": [],
+          "build_variants": ["release"]
         }
       }
     },
