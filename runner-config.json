@@ -131,7 +131,8 @@
           ],
           "family": "gfx90a",
           "fetch-gfx-targets": ["gfx90a"],
-          "build_variants": ["release"]
+          "build_variants": ["release"],
+          "submodule_bump_tests_only": true
         }
       }
     },
