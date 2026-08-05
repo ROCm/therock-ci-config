@@ -167,7 +167,15 @@
       },
       "gfx90a": {
         "linux": {
-          "test-runs-on": "linux-gfx90a-gpu-rocm",
+          "test-runs-on": "linux-gfx90a-1gpu-ossci-rocm",
+          "test-runs-on-labels": [
+            {"label": "linux-gfx90a-gpu-rocm", "weight": 0.17, "count": 2},
+            {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.83, "count": 10}
+          ],
+          "test-runs-on-multi-gpu": "linux-gfx90a-8gpu-ossci-rocm",
+          "test-runs-on-multi-gpu-labels": [
+            {"label": "linux-gfx90a-8gpu-ossci-rocm", "weight": 1.0, "count": 2}
+          ],
           "family": "gfx90a",
           "fetch-gfx-targets": ["gfx90a"],
           "build_variants": ["release"],
@@ -308,7 +316,15 @@
     },
     "gfx90a": {
       "linux": {
-        "test-runs-on": "linux-gfx90a-gpu-rocm"
+        "test-runs-on": "linux-gfx90a-1gpu-ossci-rocm",
+        "test-runs-on-labels": [
+          {"label": "linux-gfx90a-gpu-rocm", "weight": 0.17, "count": 2},
+          {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.83, "count": 10}
+        ],
+        "test-runs-on-multi-gpu": "linux-gfx90a-8gpu-ossci-rocm",
+        "test-runs-on-multi-gpu-labels": [
+          {"label": "linux-gfx90a-8gpu-ossci-rocm", "weight": 1.0, "count": 2}
+        ]
       }
     },
     "gfx103x": {
