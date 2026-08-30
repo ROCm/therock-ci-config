@@ -170,6 +170,21 @@
           "build_variants": ["release"]
         }
       },
+      "gfx90c": {
+        "linux": {
+          "test-runs-on": "",
+          "family": "gfx90c",
+          "fetch-gfx-targets": [],
+          "sanity_check_only_for_family": true,
+          "build_variants": ["release"]
+        },
+        "windows": {
+          "test-runs-on": "",
+          "family": "gfx90c",
+          "fetch-gfx-targets": [],
+          "build_variants": ["release"]
+        }
+      },
       "gfx906": {
         "linux": {
           "test-runs-on": "",
