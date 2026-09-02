@@ -117,11 +117,11 @@
         "linux": {
           "test-runs-on": "linux-gfx950-1gpu-ccs-ossci-rocm",
           "test-runs-on-labels": [
-            {"label": "linux-gfx950-1gpu-ccs-ossci-rocm", "weight": 1.0, "count": 3}
+            {"label": "", "weight": 1.0, "count": 3}
           ],
           "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
           "test-runs-on-multi-gpu-labels": [
-            {"label": "linux-gfx950-8gpu-ccs-ossci-rocm", "weight": 1.0, "count": 2}
+            {"label": "", "weight": 1.0, "count": 2}
           ],
           "family": "gfx950-dcgpu",
           "fetch-gfx-targets": ["gfx950"],
@@ -296,11 +296,11 @@
       "linux": {
         "test-runs-on": "linux-gfx950-1gpu-ccs-ossci-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx950-1gpu-ccs-ossci-rocm", "weight": 1.0, "count": 3}
+          {"label": "", "weight": 1.0, "count": 3}
         ],
         "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
         "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx950-8gpu-ccs-ossci-rocm", "weight": 1.0, "count": 2}
+          {"label": "", "weight": 1.0, "count": 2}
         ]
       }
     },
