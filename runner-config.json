@@ -10,6 +10,9 @@
         {"label": "azure-linux-scale-rocm", "weight": 0.0},
         {"label": "aws-linux-scale-rocm-prod", "weight": 1.0}
       ],
+      "small": [
+        {"label": "aws-linux-scale-rocm-small", "weight": 1.0}
+      ],
       "sanitizer": [
         {"label": "azure-linux-scale-rocm-heavy-ramdisk", "weight": 0.0},
         {"label": "aws-linux-scale-rocm-large", "weight": 1.0}
