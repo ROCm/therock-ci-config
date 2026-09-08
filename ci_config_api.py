@@ -20,13 +20,14 @@ This API provides forward and backward compatibility between workflow versions:
 - Existing code using load_config_v1() or load_runner_config() continues to work
 
 Usage in workflows:
-    # For new integrations (recommended):
-    from ci_config_api import load_config_v2
-    config = load_config_v2()
+    # Unified loader (recommended):
+    from ci_config_api import load_config
+    config = load_config("2")  # or "1" for legacy
 
-    # For existing workflows (backward compatible):
-    from ci_config_api import load_config_v1
-    config = load_config_v1()
+    # Version-specific loaders (also available):
+    from ci_config_api import load_config_v1, load_config_v2
+    config_v1 = load_config_v1()  # legacy, has gpu_families
+    config_v2 = load_config_v2()  # recommended, runner labels only
 """
 
 from __future__ import annotations
@@ -196,6 +197,49 @@ def load_config_v2(config_path: Path | None = None) -> ConfigV2:
     """
     raw = _load_raw_config(config_path, version="2")
     return _adapt_to_v2(raw)
+
+
+# =============================================================================
+# Unified loader
+# =============================================================================
+
+
+def load_config(
+    version: str = "1", config_path: Path | None = None
+) -> ConfigV1 | ConfigV2:
+    """Load configuration for the specified version.
+
+    This is the recommended entry point for loading configs. It returns the
+    appropriate typed config object based on the version parameter.
+
+    Args:
+        version: Schema version to load ("1" or "2"). Defaults to "1" for
+            backward compatibility.
+        config_path: Directory containing config files. Defaults to this file's parent.
+
+    Returns:
+        ConfigV1 for version="1", ConfigV2 for version="2".
+
+    Raises:
+        ConfigError: If the version is unsupported or config file is invalid.
+
+    Example:
+        # Load v1 (legacy, has gpu_families)
+        config = load_config("1")
+        families = config.get_gpu_families(["presubmit"])
+
+        # Load v2 (recommended, runner labels only)
+        config = load_config("2")
+        labels = config.get_gpu_runner_labels()
+    """
+    if version == "1":
+        return load_config_v1(config_path)
+    elif version == "2":
+        return load_config_v2(config_path)
+    else:
+        raise ConfigError(
+            f"Unsupported config version: {version}. Supported: {SUPPORTED_VERSIONS}"
+        )
 
 
 # =============================================================================
