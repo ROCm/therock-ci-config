@@ -111,8 +111,7 @@
       },
       "gfx125x": {
         "linux": {
-          "_comment": "NOTE: MI455 runner coordinated with leadership and MI455 war room team. Do not use this label for undesignated workflows.",
-          "test-runs-on": "linux-mi455-gpu-rocm",
+          "test-runs-on": "",
           "family": "gfx125X-dcgpu",
           "fetch-gfx-targets": [],
           "build_variants": ["release"]
@@ -373,6 +372,12 @@
     "gfx1153": {
       "linux": {
         "test-runs-on": "linux-gfx1153-gpu-rocm"
+      }
+    },
+    "gfx125x": {
+      "_comment": "NOTE: MI455 runner coordinated with leadership and MI455 war room team. Do not use this label for undesignated workflows.",
+      "linux": {
+        "test-runs-on": "linux-mi455-gpu-rocm"
       }
     }
   }
