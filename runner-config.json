@@ -373,6 +373,12 @@
       "linux": {
         "test-runs-on": "linux-gfx1153-gpu-rocm"
       }
+    },
+    "gfx125x": {
+      "_comment": "NOTE: MI455 runner coordinated with leadership and MI455 war room team. Do not use this label for undesignated workflows.",
+      "linux": {
+        "test-runs-on": "linux-mi455-gpu-rocm"
+      }
     }
   }
 }
