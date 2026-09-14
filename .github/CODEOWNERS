@@ -1,0 +1,15 @@
+# Copyright Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: MIT
+
+# This file itself - requires admin approval
+/.github/CODEOWNERS                     @ROCm/therockinfra
+
+# GitHub workflows and PR templates
+/.github/                               @ROCm/therockinfra
+
+# CI config API and tests
+/ci_config_api.py                       @ROCm/therockinfra
+/tests/                                 @ROCm/therockinfra
+
+# Default owners for everything else in the repo
+*                                       @ROCm/therockinfra
