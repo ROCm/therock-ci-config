@@ -19,9 +19,10 @@ import urllib.parse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
-
-import requests
-import yaml
+try:
+    import requests
+except ImportError:
+    os.system("pip3 install requests")
 
 NOT_READY_LABEL = "Not ready to Review"
 
