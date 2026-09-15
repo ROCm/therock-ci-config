@@ -700,9 +700,7 @@ class NewPolicyCheckTests(unittest.TestCase):
         patterns = policy.unit_test_patterns
         self.assertTrue(pc._is_test_file("test_module.py", patterns))
         self.assertTrue(pc._is_test_file("pkg/module_test.py", patterns))
-        self.assertTrue(
-            pc._is_test_file("projects/x/test/gtest/foo.cpp", patterns)
-        )
+        self.assertTrue(pc._is_test_file("projects/x/test/gtest/foo.cpp", patterns))
         self.assertFalse(pc._is_test_file("module.py", patterns))
 
     def test_pr_has_code_files(self) -> None:
@@ -761,8 +759,10 @@ class NewPolicyCheckTests(unittest.TestCase):
         #   PR Description -> Forbidden Files -> Unit Test
         self.assertRegex(
             body,
-            r"📜 \*\*PR Description\*\*.*⛔ \*\*Forbidden Files\*\*.*🧪 \*\*Unit Test\*\*",
-            # DOTALL so '.' spans newlines
+            re.compile(
+                r"📜 \*\*PR Description\*\*.*⛔ \*\*Forbidden Files\*\*.*🧪 \*\*Unit Test\*\*",
+                re.DOTALL,
+            ),
         )
 
 
