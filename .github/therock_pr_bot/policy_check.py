@@ -16,9 +16,10 @@ import re
 import sys
 import time
 import urllib.parse
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
+
 try:
     import requests
 except ImportError:
@@ -90,7 +91,7 @@ class CheckResult:
     name: str
     icon: str
     passed: bool
-    details: List[str]
+    details: List[str] = field(default_factory=list)
     pending: bool = False
     wip: bool = False
     tbe: bool = False
