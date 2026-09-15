@@ -375,7 +375,7 @@
       }
     },
     "gfx125x": {
-      "_comment": "NOTE: MI455 runner coordinated with leadership and MI455 war room team. Do not use this label for undesignated workflows.",
+      "_comment": "NOTE: MI455 runner supply is very limited, only use for a narrow set of designated workflow runs.",
       "linux": {
         "test-runs-on": "linux-mi455-gpu-rocm"
       }
