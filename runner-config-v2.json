@@ -1,5 +1,5 @@
 {
-  "version": "2",
+  "version": 2,
   "_comment_runner_count_semantics": {
     "gfx90a_gfx94X_gfx950": "1 count = 1 node (8 GPUs)",
     "all_other_archs": "1 count = 1 GPU"

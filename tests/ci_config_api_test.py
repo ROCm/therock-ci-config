@@ -22,6 +22,7 @@ from ci_config_api import (
     get_gpu_families,
     get_gpu_runner_labels,
     get_runner_labels,
+    load_config,
     load_config_v1,
     load_config_v2,
     load_runner_config,
@@ -157,8 +158,8 @@ class TestConvenienceFunctions(unittest.TestCase):
 
     def test_config_exists_false(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            self.assertFalse(config_exists(Path(tmpdir), version="1"))
-            self.assertFalse(config_exists(Path(tmpdir), version="2"))
+            self.assertFalse(config_exists(Path(tmpdir), version=1))
+            self.assertFalse(config_exists(Path(tmpdir), version=2))
 
     def test_load_runner_config(self):
         config = load_runner_config()
@@ -167,7 +168,7 @@ class TestConvenienceFunctions(unittest.TestCase):
 
     def test_get_config_version(self):
         config = load_runner_config()
-        self.assertEqual(get_config_version(config), "1")
+        self.assertEqual(get_config_version(config), 1)
 
     def test_get_build_runners(self):
         config = load_runner_config()
@@ -198,15 +199,15 @@ class TestVersioning(unittest.TestCase):
         self.assertIn(LATEST_VERSION, SUPPORTED_VERSIONS)
 
     def test_real_config_version_supported(self):
-        config = load_runner_config(version="1")
+        config = load_runner_config(version=1)
         self.assertIn(config["version"], SUPPORTED_VERSIONS)
-        config = load_runner_config(version="2")
+        config = load_runner_config(version=2)
         self.assertIn(config["version"], SUPPORTED_VERSIONS)
 
     def test_v1_loads_v1_json(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             config_data = {
-                "version": "1",
+                "version": 1,
                 "build_runners": {"linux": {"default": []}},
                 "gpu_families": {
                     "presubmit": {"gfx94x": {"linux": {"family": "test"}}}
@@ -220,7 +221,7 @@ class TestVersioning(unittest.TestCase):
     def test_v2_loads_v2_json(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             config_data = {
-                "version": "2",
+                "version": 2,
                 "build_runners": {"linux": {"default": []}},
                 "gpu_runner_labels": {"gfx94x": {"linux": {"test-runs-on": "test"}}},
             }
@@ -232,6 +233,39 @@ class TestVersioning(unittest.TestCase):
         for version in SUPPORTED_VERSIONS:
             self.assertIn(version, CONFIG_FILENAMES)
             self.assertTrue(config_exists(version=version))
+
+    def test_unsupported_version_raises(self):
+        """Test that requesting an unsupported version raises ConfigError."""
+        with self.assertRaises(ConfigError) as ctx:
+            load_config(99)
+        self.assertIn("Unsupported config version", str(ctx.exception))
+
+    def test_version_mismatch_v1_raises(self):
+        """Test that loading v2 config file with v1 loader raises ConfigError."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_data = {
+                "version": 2,
+                "build_runners": {"linux": {"default": []}},
+                "gpu_families": {},
+                "gpu_runner_labels": {"gfx94x": {"linux": {"test-runs-on": "test"}}},
+            }
+            Path(tmpdir, "runner-config.json").write_text(json.dumps(config_data))
+            with self.assertRaises(ConfigError) as ctx:
+                load_config_v1(Path(tmpdir))
+            self.assertIn("cannot be loaded as V1", str(ctx.exception))
+
+    def test_version_mismatch_v2_raises(self):
+        """Test that loading v1 config file with v2 loader raises ConfigError."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_data = {
+                "version": 1,
+                "build_runners": {"linux": {"default": []}},
+                "gpu_runner_labels": {"gfx94x": {"linux": {"test-runs-on": "test"}}},
+            }
+            Path(tmpdir, "runner-config-v2.json").write_text(json.dumps(config_data))
+            with self.assertRaises(ConfigError) as ctx:
+                load_config_v2(Path(tmpdir))
+            self.assertIn("cannot be loaded as V2", str(ctx.exception))
 
 
 class TestSchemaValidationV1(unittest.TestCase):

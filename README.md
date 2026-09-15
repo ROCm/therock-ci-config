@@ -25,11 +25,11 @@ Then load with the versioned API:
 import sys
 sys.path.insert(0, "ci-config")
 
-from ci_config_api import load_config_v1
+from ci_config_api import load_config
 
-config = load_config_v1()
+config = load_config(2)  # or 1 for legacy workflows
 runners = config.build_runners
-families = config.get_gpu_families(["presubmit"])
+labels = config.get_gpu_runner_labels()
 ```
 
 ## Version Compatibility
@@ -37,40 +37,45 @@ families = config.get_gpu_families(["presubmit"])
 The API provides forward and backward compatibility between workflow versions:
 
 ```
-runner-config.json  ← Single file, always latest schema
-ci_config_api.py    ← Versioned loaders: load_config_v1(), load_config_v2(), ...
+runner-config.json     ← V1 schema (legacy, has gpu_families)
+runner-config-v2.json  ← V2 schema (current, runner labels only)
+ci_config_api.py       ← Versioned loaders: load_config(1), load_config(2), ...
 ```
 
 **How it works:**
 
-| JSON Version | load_config_v1() | load_config_v2() |
-|--------------|------------------|------------------|
-| v1 (current) | Direct load      | N/A yet          |
-| v2 (future)  | Adapts to v1     | Direct load      |
-| v3 (future)  | Adapts to v1     | Adapts to v2     |
+| Config File            | load_config(1)   | load_config(2)   |
+|------------------------|------------------|------------------|
+| runner-config.json     | Direct load      | -                |
+| runner-config-v2.json  | -                | Direct load      |
 
-- Old workflows keep calling `load_config_v1()` and continue working
-- New workflows call `load_config_v2()` when ready
-- Each loader guarantees a stable interface regardless of JSON version
+- V1 workflows keep calling `load_config(1)` and continue working
+- New workflows should use `load_config(2)` (recommended)
+- Each version has its own config file for independent updates
+
+**Deprecation timeline:**
+
+- V1 support will be maintained until **September 29, 2026** to allow for stale PRs, release branches, and gradual migration
+- New integrations should use V2 (`load_config(2)`)
+- Migrate existing workflows from V1 to V2 during this period
 
 **Adding a new version:**
 
-1. Update `runner-config.json` with new schema (e.g., `"version": "2"`)
-2. Add `ConfigV2` dataclass and `load_config_v2()` function
-3. Update `_adapt_to_v1()` to transform v2 data to v1 interface
-4. Add `"2"` to `SUPPORTED_VERSIONS`
-5. Migrate workflows incrementally from v1 to v2
+1. Create new config file (e.g., `runner-config-v3.json`)
+2. Add `ConfigV3` dataclass and update `load_config()` function
+3. Add `3` to `SUPPORTED_VERSIONS` and `CONFIG_FILENAMES`
+4. Migrate workflows incrementally to the new version
 
 ## API Reference
 
 ### Versioned API (Recommended)
 
 ```python
-from ci_config_api import load_config_v1, ConfigV1, ConfigError
+from ci_config_api import load_config, ConfigV2, ConfigError
 
-config: ConfigV1 = load_config_v1()
+config: ConfigV2 = load_config(2)
 runners = config.build_runners
-families = config.get_gpu_families(["presubmit", "postsubmit"])
+labels = config.get_gpu_runner_labels()
 ```
 
 ### Convenience Functions
