@@ -54,18 +54,7 @@ class ConfigError(Exception):
 
 
 def _load_raw_config(config_path: Path | None, version: int) -> dict[str, Any]:
-    """Load raw JSON config file for the specified version.
-
-    Args:
-        config_path: Directory containing config files. Defaults to this file's parent.
-        version: Schema version to load (1 or 2). Required.
-
-    Returns:
-        Raw configuration dictionary.
-
-    Raises:
-        ConfigError: If the config file doesn't exist or contains invalid JSON.
-    """
+    """Load raw JSON config file for the specified version."""
     if config_path is None:
         config_path = Path(__file__).parent
 
@@ -93,14 +82,7 @@ def _load_raw_config(config_path: Path | None, version: int) -> dict[str, Any]:
 
 @dataclass
 class ConfigV1:
-    """Version 1 configuration schema (legacy).
-
-    V1 config file (runner-config.json) includes both gpu_families and
-    gpu_runner_labels. This is maintained for backward compatibility with
-    existing workflows in TheRock and other repos.
-
-    For new integrations, use ConfigV2/load_config_v2() instead.
-    """
+    """Version 1 configuration schema (legacy). Use ConfigV2 for new integrations."""
 
     build_runners: dict[str, Any]
     gpu_families: dict[str, Any]
@@ -144,15 +126,7 @@ def _adapt_to_v1(raw: dict[str, Any]) -> ConfigV1:
 
 
 def load_config_v1(config_path: Path | None = None) -> ConfigV1:
-    """Load configuration with V1 interface (legacy).
-
-    Loads runner-config.json (v1 schema) which includes gpu_families.
-    Maintained for backward compatibility with existing workflows.
-
-    For new integrations, use load_config_v2() instead.
-
-    Note: V1 is deprecated and will be removed after September 29, 2026.
-    """
+    """Load V1 config (legacy). Deprecated, use load_config(2) instead."""
     # Emit deprecation warning in GitHub Actions format
     print(
         "::warning file=ci_config_api.py,title=Deprecated API::"
@@ -169,11 +143,7 @@ def load_config_v1(config_path: Path | None = None) -> ConfigV1:
 
 @dataclass
 class ConfigV2:
-    """Version 2 configuration schema (current/recommended).
-
-    V2 removes gpu_families and uses only gpu_runner_labels for runner config.
-    This is the recommended schema for new integrations.
-    """
+    """Version 2 configuration schema (recommended)."""
 
     build_runners: dict[str, Any]
     gpu_runner_labels: dict[str, Any]
@@ -202,11 +172,7 @@ def _adapt_to_v2(raw: dict[str, Any]) -> ConfigV2:
 
 
 def load_config_v2(config_path: Path | None = None) -> ConfigV2:
-    """Load configuration with V2 interface (recommended).
-
-    Loads runner-config-v2.json (v2 schema) which only has gpu_runner_labels.
-    This is the recommended loader for new integrations.
-    """
+    """Load V2 config (recommended)."""
     raw = _load_raw_config(config_path, version=2)
     return _adapt_to_v2(raw)
 
@@ -219,31 +185,7 @@ def load_config_v2(config_path: Path | None = None) -> ConfigV2:
 def load_config(
     version: int = 1, config_path: Path | None = None
 ) -> ConfigV1 | ConfigV2:
-    """Load configuration for the specified version.
-
-    This is the recommended entry point for loading configs. It returns the
-    appropriate typed config object based on the version parameter.
-
-    Args:
-        version: Schema version to load (1 or 2). Defaults to 1 for
-            backward compatibility.
-        config_path: Directory containing config files. Defaults to this file's parent.
-
-    Returns:
-        ConfigV1 for version=1, ConfigV2 for version=2.
-
-    Raises:
-        ConfigError: If the version is unsupported or config file is invalid.
-
-    Example:
-        # Load v1 (legacy, has gpu_families)
-        config = load_config(1)
-        families = config.get_gpu_families(["presubmit"])
-
-        # Load v2 (recommended, runner labels only)
-        config = load_config(2)
-        labels = config.get_gpu_runner_labels()
-    """
+    """Load configuration for the specified version. Recommended entry point."""
     if version == 1:
         return load_config_v1(config_path)
     elif version == 2:
@@ -281,12 +223,7 @@ def log_config_version(config: dict[str, Any], config_path: Path) -> None:
 def load_runner_config(
     config_path: Path | None = None, version: int = 1
 ) -> dict[str, Any]:
-    """Load configuration and return raw dict.
-
-    Args:
-        config_path: Directory containing config files.
-        version: Schema version (1 or 2). Defaults to 1 for backward compat.
-    """
+    """Load configuration and return raw dict."""
     if version == 2:
         return load_config_v2(config_path)._raw
     return load_config_v1(config_path)._raw
@@ -300,11 +237,7 @@ def get_build_runners(config: dict[str, Any]) -> dict[str, Any]:
 def get_gpu_families(
     config: dict[str, Any], trigger_types: list[str]
 ) -> dict[str, Any]:
-    """Get GPU families from raw config dict for specified trigger types.
-
-    Note: For new code that only needs runner labels, prefer get_gpu_runner_labels()
-    which provides a simpler flat structure without trigger type organization.
-    """
+    """Get GPU families from raw config dict for specified trigger types."""
     gpu_families = config.get("gpu_families", {})
     result: dict[str, Any] = {}
     for trigger_type in trigger_types:
@@ -315,15 +248,7 @@ def get_gpu_families(
 
 
 def get_gpu_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
-    """Get GPU runner labels from config dict.
-
-    Returns the gpu_runner_labels section which contains only runner-related
-    configuration (test-runs-on, benchmark-runs-on, etc.) organized by
-    GPU family name and platform.
-
-    New code should prefer this over get_gpu_families() when only runner
-    labels are needed, as it provides a simpler flat structure.
-    """
+    """Get GPU runner labels from config dict."""
     return config.get("gpu_runner_labels", {})
 
 
@@ -333,10 +258,7 @@ def get_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
 
 
 def print_config_summary(config_path: Path | None = None) -> None:
-    """Print a summary of both V1 and V2 configurations.
-
-    Useful for debugging and verifying config contents.
-    """
+    """Print a summary of both V1 and V2 configurations."""
     print("=== V1 Config (Legacy) ===")
     config_v1 = load_config_v1(config_path)
     print(f"Build runners: {list(config_v1.build_runners.keys())}")
