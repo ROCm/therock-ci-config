@@ -61,7 +61,7 @@ class TestLoadConfigV1(unittest.TestCase):
 
     def test_missing_keys_raises(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            Path(tmpdir, "runner-config.json").write_text('{"version": "1"}')
+            Path(tmpdir, "runner-config.json").write_text('{"version": 1}')
             with self.assertRaises(ConfigError) as ctx:
                 load_config_v1(Path(tmpdir))
             self.assertIn("missing required keys", str(ctx.exception))
@@ -129,7 +129,7 @@ class TestLoadConfigV2(unittest.TestCase):
 
     def test_missing_keys_raises(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            Path(tmpdir, "runner-config-v2.json").write_text('{"version": "2"}')
+            Path(tmpdir, "runner-config-v2.json").write_text('{"version": 2}')
             with self.assertRaises(ConfigError) as ctx:
                 load_config_v2(Path(tmpdir))
             self.assertIn("missing required keys", str(ctx.exception))
