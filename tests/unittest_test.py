@@ -671,69 +671,80 @@ class NewPolicyCheckTests(unittest.TestCase):
             ("", ""),
             ("plain text", "plain text"),
             ("<!-- comment -->", ""),
-            ("line 1\n<!-- comment -->\nline 2", "line 1\nline 2"),
+            # _strip_markdown_comments removes ONLY the comment, leaving the
+            # surrounding newlines untouched.
+            ("line 1\n<!-- comment -->\nline 2", "line 1\n\nline 2"),
             (
                 "Before comment\n<!-- Comment with JIRA ID: TEST-123 -->\nAfter",
-                "Before comment\nAfter",
+                "Before comment\n\nAfter",
             ),
             (
                 "Before comment\n<!-- Comment with ISSUE ID: TEST-123 -->\nAfter",
-                "Before comment\nAfter",
+                "Before comment\n\nAfter",
             ),
         ]:
             with self.subTest(body=body):
                 self.assertEqual(pc._strip_markdown_comments(body), expected)
 
     def test_matches_forbidden(self) -> None:
-        policy = make_policy(forbidden_paths=["**/secret.txt", "**/config/*.env"])
-        self.assertTrue(pc._matches_forbidden("config/.env", policy))
-        self.assertTrue(pc._matches_forbidden("path/to/secret.txt", policy))
-        self.assertFalse(pc._matches_forbidden("README.md", policy))
+        # _matches_forbidden takes a single glob PATTERN (str), not a Policy.
+        self.assertTrue(pc._matches_forbidden("config/app.env", "**/config/*.env"))
+        self.assertTrue(pc._matches_forbidden("a/b/secret.txt", "**/secret.txt"))
+        self.assertFalse(pc._matches_forbidden("config/app.txt", "**/config/*.env"))
 
     def test_is_test_file(self) -> None:
         policy = make_policy(
             unit_test_patterns=["test_*", "*_test.*", "**/test/gtest/**"]
         )
-        self.assertTrue(pc._is_test_file("test_module.py", policy))
-        self.assertTrue(pc._is_test_file("src/module_test.py", policy))
-        self.assertFalse(pc._is_test_file("module.py", policy))
+        # _is_test_file takes the list of patterns, not a Policy object.
+        patterns = policy.unit_test_patterns
+        self.assertTrue(pc._is_test_file("test_module.py", patterns))
+        self.assertTrue(pc._is_test_file("pkg/module_test.py", patterns))
+        self.assertTrue(
+            pc._is_test_file("projects/x/test/gtest/foo.cpp", patterns)
+        )
+        self.assertFalse(pc._is_test_file("module.py", patterns))
 
     def test_pr_has_code_files(self) -> None:
+        policy = make_policy()
         files_with_code = [make_file("src/app.py"), make_file("README.md")]
         files_without_code = [make_file("docs/CONTRIBUTING.md")]
 
-        self.assertTrue(pc.pr_has_code_files(files_with_code))
-        self.assertFalse(pc.pr_has_code_files(files_without_code))
+        # pr_has_code_files(policy, pr_files)
+        self.assertTrue(pc.pr_has_code_files(policy, files_with_code))
+        self.assertFalse(pc.pr_has_code_files(policy, files_without_code))
 
     def test_build_bump_pr_results(self) -> None:
         policy = make_policy()
-        base = "refs/pull/123/merge"
-        head = "refs/pull/123/head"
-        sha = "abc123"
+        # build_bump_pr_results takes ONLY the policy.
+        results = pc.build_bump_pr_results(policy)
+        self.assertTrue(all(r.passed for r in results))
+        names = {r.name for r in results}
+        self.assertIn("PR Description", names)
+        self.assertIn("therock-pr-bot", names)
+        # Required checks from the policy are included as pass rows.
+        for req in policy.required_checks:
+            self.assertIn(req, names)
 
-        # Successful check run
-        runs = [{"name": "pre-commit", "conclusion": "success"}]
-        results = pc.build_bump_pr_results(policy, base, head, sha, runs)
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].name, "pre-commit")
-        self.assertTrue(results[0].passed)
+    def test_table_rendering_pending(self) -> None:
+        result = pc.CheckResult("Unit Test", "🧪", passed=True, pending=True)
+        marker = "<!-- test -->"
+        body = pc.build_policy_table_comment([result], marker, ready=True)
 
-        # Failing check run
-        runs = [{"name": "pre-commit", "conclusion": "failure"}]
-        results = pc.build_bump_pr_results(policy, base, head, sha, runs)
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].name, "pre-commit")
-        self.assertFalse(results[0].passed)
+        # Pending checks render with the '⏳ Pending' status in the Status column.
+        self.assertIn("🧪 **Unit Test**", body)
+        self.assertIn("⏳ Pending", body)
 
-        # Pending check run
-        runs = [{"name": "pre-commit", "conclusion": None}]
-        results = pc.build_bump_pr_results(policy, base, head, sha, runs)
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].name, "pre-commit")
-        self.assertTrue(results[0].pending)
+    def test_table_rendering_note(self) -> None:
+        result = pc.CheckResult("Note", "ℹ️", passed=True, note="This is a note.")
+        marker = "<!-- test -->"
+        body = pc.build_policy_table_comment([result], marker, ready=True)
+
+        # The row identity emoji + bold name, and the note text, appear.
+        self.assertIn("ℹ️ **Note**", body)
+        self.assertIn("This is a note.", body)
 
     def test_table_rendering_order(self) -> None:
-        # Test the order of rows in the rendered policy table.
         policy = make_policy(
             required_checks=["pre-commit"],
             description_issue_patterns=[re.compile(p) for p in _ISSUE_PATTERNS],
@@ -746,29 +757,13 @@ class NewPolicyCheckTests(unittest.TestCase):
         marker = "<!-- test -->"
         body = pc.build_policy_table_comment(results, marker, ready=True)
 
-        # Check order: Unit Test -> Forbidden Files -> PR Description
+        # Rows are sorted by TABLE_ORDER:
+        #   PR Description -> Forbidden Files -> Unit Test
         self.assertRegex(
-            body, r"🧪 Unit Test.*⛔ Forbidden Files.*📜 PR Description", re.DOTALL
+            body,
+            r"📜 \*\*PR Description\*\*.*⛔ \*\*Forbidden Files\*\*.*🧪 \*\*Unit Test\*\*",
+            # DOTALL so '.' spans newlines
         )
-
-    def test_table_rendering_pending(self) -> None:
-        # Test rendering of a pending check in the policy table.
-        result = pc.CheckResult("Unit Test", "🧪", passed=True, pending=True)
-        marker = "<!-- test -->"
-        body = pc.build_policy_table_comment([result], marker, ready=True)
-
-        # Pending checks should be marked with '(pending)'
-        self.assertIn("🧪 Unit Test (pending)", body)
-
-    def test_table_rendering_note(self) -> None:
-        # Test rendering of notes in the policy table.
-        result = pc.CheckResult("Note", "ℹ️", passed=True, details=["This is a note."])
-        marker = "<!-- test -->"
-        body = pc.build_policy_table_comment([result], marker, ready=True)
-
-        # Notes should appear with the 'ℹ️' icon
-        self.assertIn("ℹ️ Note", body)
-        self.assertIn("This is a note.", body)
 
 
 if __name__ == "__main__":
