@@ -373,6 +373,12 @@
       "linux": {
         "test-runs-on": "linux-gfx1153-gpu-rocm"
       }
+    },
+    "gfx125x": {
+      "_comment": "NOTE: MI455 runner supply is very limited, only use for a narrow set of designated workflow runs.",
+      "linux": {
+        "test-runs-on": "linux-mi455-gpu-rocm"
+      }
     }
   }
 }
