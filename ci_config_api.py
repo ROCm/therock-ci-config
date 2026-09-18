@@ -4,22 +4,30 @@
 
 """Versioned CI configuration API.
 
+Schema Versions
+---------------
+- V1 (runner-config.json): Legacy schema with gpu_families + gpu_runner_labels.
+  Maintained for backward compatibility with existing workflows.
+- V2 (runner-config-v2.json): Current/recommended schema with only gpu_runner_labels.
+  Use this for new integrations.
+
 Version Compatibility
 ---------------------
 This API provides forward and backward compatibility between workflow versions:
 
-- Single JSON file (runner-config.json) always contains the latest schema
-- Each load_config_vN() function provides a stable interface for version N
-- When JSON schema upgrades, older loaders adapt the new data to their interface
-
-Example: When JSON upgrades from v1 to v2:
-- load_config_v1() reads v2 JSON and transforms it to v1 interface (backward compat)
-- load_config_v2() reads v2 JSON directly
-- Old workflows keep calling load_config_v1() and continue working
+- Separate JSON files for each version (runner-config.json, runner-config-v2.json)
+- Each load_config_vN() function loads the corresponding version file
+- Existing code using load_config_v1() or load_runner_config() continues to work
 
 Usage in workflows:
-    from ci_config_api import load_config_v1
-    config = load_config_v1()
+    # Unified loader (recommended):
+    from ci_config_api import load_config
+    config = load_config(2)  # or 1 for legacy
+
+    # Version-specific loaders (also available):
+    from ci_config_api import load_config_v1, load_config_v2
+    config_v1 = load_config_v1()  # legacy, has gpu_families
+    config_v2 = load_config_v2()  # recommended, runner labels only
 """
 
 from __future__ import annotations
@@ -31,9 +39,12 @@ from pathlib import Path
 from typing import Any
 
 # Supported versions: loaders exist for all versions in this list
-SUPPORTED_VERSIONS = ["1"]
-LATEST_VERSION = "1"
-CONFIG_FILENAME = "runner-config.json"
+SUPPORTED_VERSIONS = [1, 2]
+LATEST_VERSION = 2
+CONFIG_FILENAMES = {
+    1: "runner-config.json",
+    2: "runner-config-v2.json",
+}
 
 
 class ConfigError(Exception):
@@ -42,12 +53,17 @@ class ConfigError(Exception):
     pass
 
 
-def _load_raw_config(config_path: Path | None = None) -> dict[str, Any]:
-    """Load raw JSON config file."""
+def _load_raw_config(config_path: Path | None, version: int) -> dict[str, Any]:
+    """Load raw JSON config file for the specified version."""
     if config_path is None:
         config_path = Path(__file__).parent
 
-    config_file = config_path / CONFIG_FILENAME
+    if version not in CONFIG_FILENAMES:
+        raise ConfigError(
+            f"Unknown config version: {version}. Supported: {list(CONFIG_FILENAMES.keys())}"
+        )
+
+    config_file = config_path / CONFIG_FILENAMES[version]
 
     if not config_file.exists():
         raise ConfigError(f"Config not found: {config_file}")
@@ -60,16 +76,17 @@ def _load_raw_config(config_path: Path | None = None) -> dict[str, Any]:
 
 
 # =============================================================================
-# Version 1 API
+# Version 1 API (Legacy - for backward compatibility)
 # =============================================================================
 
 
 @dataclass
 class ConfigV1:
-    """Version 1 configuration schema."""
+    """Version 1 configuration schema (legacy). Use ConfigV2 for new integrations."""
 
     build_runners: dict[str, Any]
     gpu_families: dict[str, Any]
+    gpu_runner_labels: dict[str, Any]
     _raw: dict[str, Any]
 
     def get_gpu_families(self, trigger_types: list[str]) -> dict[str, Any]:
@@ -81,67 +98,102 @@ class ConfigV1:
                     result[name] = config
         return result
 
+    def get_gpu_runner_labels(self) -> dict[str, Any]:
+        """Get GPU runner labels organized by family name and platform."""
+        return self.gpu_runner_labels
+
 
 def _adapt_to_v1(raw: dict[str, Any]) -> ConfigV1:
-    """Adapt any supported JSON version to V1 interface."""
-    version = raw.get("version", "1")
-
-    if version == "1":
-        # Direct load
-        missing = [k for k in ("build_runners", "gpu_families") if k not in raw]
-        if missing:
-            raise ConfigError(f"Config missing required keys: {missing}")
-        return ConfigV1(
-            build_runners=raw["build_runners"],
-            gpu_families=raw["gpu_families"],
-            _raw=raw,
+    """Adapt V1 JSON to V1 interface."""
+    version = raw.get("version", 1)
+    if version != 1:
+        raise ConfigError(
+            f"Config version {version} cannot be loaded as V1. Expected version 1."
         )
-
-    # Future: when v2 exists, transform v2 data to v1 interface here
-    # if version == "2":
-    #     return ConfigV1(
-    #         build_runners=raw["build_runners"],
-    #         gpu_families=_transform_v2_families_to_v1(raw),
-    #         _raw=raw,
-    #     )
-
-    raise ConfigError(
-        f"Config version {version} not supported by load_config_v1(). "
-        f"Supported: {SUPPORTED_VERSIONS}"
+    missing = [
+        k
+        for k in ("build_runners", "gpu_families", "gpu_runner_labels")
+        if k not in raw
+    ]
+    if missing:
+        raise ConfigError(f"Config missing required keys: {missing}")
+    return ConfigV1(
+        build_runners=raw["build_runners"],
+        gpu_families=raw["gpu_families"],
+        gpu_runner_labels=raw["gpu_runner_labels"],
+        _raw=raw,
     )
 
 
 def load_config_v1(config_path: Path | None = None) -> ConfigV1:
-    """Load configuration with V1 interface (backward compatible)."""
-    raw = _load_raw_config(config_path)
+    """Load V1 config (legacy). Deprecated, use load_config(2) instead."""
+    # Emit deprecation warning in GitHub Actions format
+    print(
+        "::warning file=ci_config_api.py,title=Deprecated API::"
+        "load_config_v1() is deprecated. Migrate to load_config(2) before September 29, 2026."
+    )
+    raw = _load_raw_config(config_path, version=1)
     return _adapt_to_v1(raw)
 
 
 # =============================================================================
-# Future: Version 2 API (uncomment when v2 schema is ready)
+# Version 2 API (Current - recommended for new integrations)
 # =============================================================================
 
-# @dataclass
-# class ConfigV2:
-#     """Version 2 configuration schema."""
-#     build_runners: dict[str, Any]
-#     gfx_targets: dict[str, Any]  # Example: renamed from gpu_families
-#     _raw: dict[str, Any]
-#
-#     def get_targets(self, trigger_types: list[str]) -> dict[str, Any]:
-#         ...
-#
-# def _adapt_to_v2(raw: dict[str, Any]) -> ConfigV2:
-#     """Adapt any supported JSON version to V2 interface."""
-#     version = raw.get("version", "1")
-#     if version == "2":
-#         return ConfigV2(...)  # Direct load
-#     raise ConfigError(f"Config version {version} cannot be loaded as V2")
-#
-# def load_config_v2(config_path: Path | None = None) -> ConfigV2:
-#     """Load configuration with V2 interface."""
-#     raw = _load_raw_config(config_path)
-#     return _adapt_to_v2(raw)
+
+@dataclass
+class ConfigV2:
+    """Version 2 configuration schema (recommended)."""
+
+    build_runners: dict[str, Any]
+    gpu_runner_labels: dict[str, Any]
+    _raw: dict[str, Any]
+
+    def get_gpu_runner_labels(self) -> dict[str, Any]:
+        """Get GPU runner labels organized by family name and platform."""
+        return self.gpu_runner_labels
+
+
+def _adapt_to_v2(raw: dict[str, Any]) -> ConfigV2:
+    """Adapt V2 JSON to V2 interface."""
+    version = raw.get("version", 1)
+    if version != 2:
+        raise ConfigError(
+            f"Config version {version} cannot be loaded as V2. Expected version 2."
+        )
+    missing = [k for k in ("build_runners", "gpu_runner_labels") if k not in raw]
+    if missing:
+        raise ConfigError(f"Config missing required keys: {missing}")
+    return ConfigV2(
+        build_runners=raw["build_runners"],
+        gpu_runner_labels=raw["gpu_runner_labels"],
+        _raw=raw,
+    )
+
+
+def load_config_v2(config_path: Path | None = None) -> ConfigV2:
+    """Load V2 config (recommended)."""
+    raw = _load_raw_config(config_path, version=2)
+    return _adapt_to_v2(raw)
+
+
+# =============================================================================
+# Unified loader
+# =============================================================================
+
+
+def load_config(
+    version: int = 1, config_path: Path | None = None
+) -> ConfigV1 | ConfigV2:
+    """Load configuration for the specified version. Recommended entry point."""
+    if version == 1:
+        return load_config_v1(config_path)
+    elif version == 2:
+        return load_config_v2(config_path)
+    else:
+        raise ConfigError(
+            f"Unsupported config version: {version}. Supported: {SUPPORTED_VERSIONS}"
+        )
 
 
 # =============================================================================
@@ -149,16 +201,17 @@ def load_config_v1(config_path: Path | None = None) -> ConfigV1:
 # =============================================================================
 
 
-def config_exists(config_path: Path | None = None) -> bool:
-    """Check if configuration file exists."""
+def config_exists(config_path: Path | None = None, version: int = 1) -> bool:
+    """Check if configuration file exists for the specified version."""
     if config_path is None:
         config_path = Path(__file__).parent
-    return (config_path / CONFIG_FILENAME).exists()
+    filename = CONFIG_FILENAMES.get(version, CONFIG_FILENAMES[1])
+    return (config_path / filename).exists()
 
 
-def get_config_version(config: dict[str, Any]) -> str:
-    """Get the version string from a raw config dict."""
-    return config.get("version", "1")
+def get_config_version(config: dict[str, Any]) -> int:
+    """Get the version from a raw config dict."""
+    return config.get("version", 1)
 
 
 def log_config_version(config: dict[str, Any], config_path: Path) -> None:
@@ -167,8 +220,12 @@ def log_config_version(config: dict[str, Any], config_path: Path) -> None:
     logging.info(f"Loaded CI config v{version} from: {config_path}")
 
 
-def load_runner_config(config_path: Path | None = None) -> dict[str, Any]:
+def load_runner_config(
+    config_path: Path | None = None, version: int = 1
+) -> dict[str, Any]:
     """Load configuration and return raw dict."""
+    if version == 2:
+        return load_config_v2(config_path)._raw
     return load_config_v1(config_path)._raw
 
 
@@ -180,11 +237,7 @@ def get_build_runners(config: dict[str, Any]) -> dict[str, Any]:
 def get_gpu_families(
     config: dict[str, Any], trigger_types: list[str]
 ) -> dict[str, Any]:
-    """Get GPU families from raw config dict for specified trigger types.
-
-    Note: For new code that only needs runner labels, prefer get_runner_labels()
-    which provides a simpler flat structure without trigger type organization.
-    """
+    """Get GPU families from raw config dict for specified trigger types."""
     gpu_families = config.get("gpu_families", {})
     result: dict[str, Any] = {}
     for trigger_type in trigger_types:
@@ -195,15 +248,7 @@ def get_gpu_families(
 
 
 def get_gpu_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
-    """Get GPU runner labels from config dict.
-
-    Returns the gpu_runner_labels section which contains only runner-related
-    configuration (test-runs-on, benchmark-runs-on, etc.) organized by
-    GPU family name and platform.
-
-    New code should prefer this over get_gpu_families() when only runner
-    labels are needed, as it provides a simpler flat structure.
-    """
+    """Get GPU runner labels from config dict."""
     return config.get("gpu_runner_labels", {})
 
 
@@ -212,18 +257,29 @@ def get_runner_labels(config: dict[str, Any]) -> dict[str, Any]:
     return get_gpu_runner_labels(config)
 
 
+def print_config_summary(config_path: Path | None = None) -> None:
+    """Print a summary of both V1 and V2 configurations."""
+    print("=== V1 Config (Legacy) ===")
+    config_v1 = load_config_v1(config_path)
+    print(f"Build runners: {list(config_v1.build_runners.keys())}")
+    print(
+        f"GPU families (presubmit): {list(config_v1.get_gpu_families(['presubmit']).keys())}"
+    )
+    print(f"GPU runner labels: {list(config_v1.gpu_runner_labels.keys())}")
+
+    print("\n=== V2 Config (Recommended) ===")
+    config_v2 = load_config_v2(config_path)
+    print(f"Build runners: {list(config_v2.build_runners.keys())}")
+    print(f"GPU runner labels: {list(config_v2.gpu_runner_labels.keys())}")
+
+
 if __name__ == "__main__":
     import sys
 
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else None
 
     try:
-        config = load_config_v1(path)
-        print(f"Loaded config (latest: v{LATEST_VERSION})")
-        print(f"Build runners: {list(config.build_runners.keys())}")
-        print(
-            f"GPU families (presubmit): {list(config.get_gpu_families(['presubmit']).keys())}"
-        )
+        print_config_summary(path)
     except ConfigError as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
