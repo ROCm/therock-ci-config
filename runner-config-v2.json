@@ -9,24 +9,20 @@
       "default": [
         {"label": "azure-linux-scale-rocm", "weight": 0.0},
         {"label": "aws-linux-scale-rocm-prod", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-customer-dev", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prolense-test", "weight": 1.0}
+        {"label": "aws-linux-scale-rocm-customer-dev", "weight": 1.0}
       ],
       "small": [
         {"label": "aws-linux-scale-rocm-small", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-small-dev", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prolense-test", "weight": 1.0}
+        {"label": "aws-linux-scale-rocm-small-dev", "weight": 1.0}
       ],
       "medium": [
         {"label": "aws-linux-scale-rocm-medium", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-medium-dev", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prolense-test", "weight": 1.0}
+        {"label": "aws-linux-scale-rocm-medium-dev", "weight": 1.0}
       ],
       "sanitizer": [
         {"label": "azure-linux-scale-rocm-heavy-ramdisk", "weight": 0.0},
         {"label": "aws-linux-scale-rocm-large", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-sanitizer-customer-dev", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prolense-test", "weight": 1.0}
+        {"label": "aws-linux-scale-rocm-sanitizer-customer-dev", "weight": 1.0}
       ]
     },
     "windows": {
