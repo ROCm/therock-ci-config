@@ -97,16 +97,14 @@
           "family": "gfx120X-all",
           "fetch-gfx-targets": ["gfx1200", "gfx1201"],
           "bypass_tests_for_releases": true,
-          "build_variants": ["release"],
-          "nightly_check_only_for_family": true
+          "build_variants": ["release"]
         },
         "windows": {
           "test-runs-on": "windows-gfx120X-gpu-rocm",
           "family": "gfx120X-all",
           "fetch-gfx-targets": ["gfx1200", "gfx1201"],
           "bypass_tests_for_releases": true,
-          "build_variants": ["release"],
-          "nightly_check_only_for_family": true
+          "build_variants": ["release"]
         }
       },
       "gfx125x": {
