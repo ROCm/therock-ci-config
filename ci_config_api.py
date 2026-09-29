@@ -74,8 +74,15 @@ def _adapt_config(raw: dict[str, Any]) -> Config:
     )
 
 
-def load_config(config_path: Path | None = None) -> Config:
-    """Load configuration. Recommended entry point."""
+def load_config(config_path: Path | None = None, version: int = 2) -> Config:
+    """Load configuration. Recommended entry point.
+
+    Args:
+        config_path: Path to config directory. Defaults to this file's directory.
+        version: Accepted for backward compatibility (only v2 is supported).
+    """
+    if version != 2:
+        raise ConfigError(f"Only version 2 is supported, got version={version}")
     raw = _load_raw_config(config_path)
     return _adapt_config(raw)
 
