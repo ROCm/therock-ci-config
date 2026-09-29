@@ -83,8 +83,21 @@ def load_config(config_path: Path | None = None, version: int = 2) -> Config:
     """
     if version != 2:
         raise ConfigError(f"Only version 2 is supported, got version={version}")
+
+    resolved_path = config_path if config_path is not None else Path(__file__).parent
+    config_file = resolved_path / CONFIG_FILENAME
+
+    print(f"[therock-ci-config] Loading config v{version} from: {config_file}")
+
     raw = _load_raw_config(config_path)
-    return _adapt_config(raw)
+    config = _adapt_config(raw)
+
+    print(
+        f"[therock-ci-config] Loaded {len(config.gpu_runner_labels)} GPU families, "
+        f"{len(config.build_runners)} build runner platforms"
+    )
+
+    return config
 
 
 # =============================================================================
