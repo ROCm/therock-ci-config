@@ -4,6 +4,11 @@
     "gfx90a_gfx94X_gfx950": "1 count = 1 node (8 GPUs)",
     "all_other_archs": "1 count = 1 GPU"
   },
+  "_comment_test_control_fields": {
+    "tests_enabled": "boolean - emergency shutoff for all tests on a family/platform",
+    "test_filter_override": "string - force test tier: 'quick', 'standard', 'comprehensive', 'full'",
+    "disabled_test_components": "array - list of test component names to skip (e.g., ['rocblas', 'miopen'])"
+  },
   "build_runners": {
     "linux": {
       "default": [
@@ -45,7 +50,10 @@
         "test-runs-on-multi-gpu-labels": [
           {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 1.0, "count": 10}
         ],
-        "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
+        "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx950": {
@@ -61,7 +69,10 @@
         "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
         "test-runs-on-multi-gpu-labels": [
           {"label": "linux-gfx950-8gpu-ccs-ossci-rocm", "weight": 1.0, "count": 2}
-        ]
+        ],
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx110x": {
