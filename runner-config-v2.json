@@ -58,10 +58,8 @@
         "test-runs-on-sandbox-labels": [
           {"label": "linux-gfx950-8gpu-asan-sandbox-rocm", "weight": 1.0, "count": 4}
         ],
-        "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
-        "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx950-8gpu-ccs-ossci-rocm", "weight": 1.0, "count": 2}
-        ]
+        "_comment_test-runs-on-multi-gpu": "Runner scheduling due to Docker login failures, disabling. Label: linux-gfx950-8gpu-ccs-ossci-rocm, count: 2",
+        "test-runs-on-multi-gpu": ""
       }
     },
     "gfx110x": {
