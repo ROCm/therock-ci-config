@@ -77,10 +77,16 @@
     },
     "gfx110x": {
       "linux": {
-        "test-runs-on": "linux-gfx110X-gpu-rocm"
+        "test-runs-on": "linux-gfx110X-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       },
       "windows": {
-        "test-runs-on": "windows-gfx110X-gpu-rocm"
+        "test-runs-on": "windows-gfx110X-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx1151": {
@@ -88,19 +94,31 @@
         "test-runs-on": "linux-gfx1151-gpu-rocm",
         "test-runs-on-kernel": {
           "oem": "linux-strix-halo-gpu-rocm-oem"
-        }
+        },
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       },
       "windows": {
         "test-runs-on": "windows-gfx1151-gpu-rocm",
-        "benchmark-runs-on": "windows-gfx1151-gpu-rocm"
+        "benchmark-runs-on": "windows-gfx1151-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx120x": {
       "linux": {
-        "test-runs-on": "linux-gfx120X-gpu-rocm"
+        "test-runs-on": "linux-gfx120X-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       },
       "windows": {
-        "test-runs-on": "windows-gfx120X-gpu-rocm"
+        "test-runs-on": "windows-gfx120X-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx90a": {
@@ -115,31 +133,49 @@
         "test-runs-on-multi-gpu-labels": [
           {"label": "linux-gfx90a-8gpu-ossci-rocm", "weight": 0.50, "count": 2},
           {"label": "linux-mi210-8gpu-ossci-rocm", "weight": 0.50, "count": 2}
-        ]
+        ],
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx103x": {
       "linux": {
-        "test-runs-on": "linux-gfx1030-gpu-rocm"
+        "test-runs-on": "linux-gfx1030-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       },
       "windows": {
-        "test-runs-on": "windows-gfx1030-gpu-rocm"
+        "test-runs-on": "windows-gfx1030-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx1150": {
       "linux": {
-        "test-runs-on": "linux-gfx1150-gpu-rocm"
+        "test-runs-on": "linux-gfx1150-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx1153": {
       "linux": {
-        "test-runs-on": "linux-gfx1153-gpu-rocm"
+        "test-runs-on": "linux-gfx1153-gpu-rocm",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     },
     "gfx125x": {
       "linux": {
         "_comment": "NOTE: MI455 runner supply is very limited, only use for a narrow set of designated workflow runs. Label: linux-mi455-gpu-rocm",
-        "test-runs-on": ""
+        "test-runs-on": "",
+        "tests_enabled": true,
+        "test_filter_override": "",
+        "disabled_test_components": []
       }
     }
   }
