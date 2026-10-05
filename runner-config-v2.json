@@ -5,7 +5,7 @@
     "all_other_archs": "1 count = 1 GPU"
   },
   "_comment_test_control_fields": {
-    "tests_enabled": "boolean - emergency shutoff for all tests on a family/platform",
+    "tests_enabled": "boolean - master toggle for all tests on a family/platform",
     "test_filter_override": "string - force test tier: 'quick', 'standard', 'comprehensive', 'full'",
     "disabled_test_components": "array - list of test component names to skip (e.g., ['rocblas', 'miopen'])"
   },
