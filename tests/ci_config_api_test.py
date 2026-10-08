@@ -132,7 +132,7 @@ class TestSchemaValidation(unittest.TestCase):
         for family_name, platforms in config.gpu_runner_labels.items():
             self.assertIsInstance(platforms, dict)
             for platform, settings in platforms.items():
-                self.assertIn(platform, ["linux", "windows"])
+                self.assertIn(platform, ["linux", "windows", "wsl"])
                 # At minimum, test-runs-on should be present
                 self.assertIn("test-runs-on", settings)
 

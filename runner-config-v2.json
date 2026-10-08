@@ -68,6 +68,9 @@
       },
       "windows": {
         "test-runs-on": "windows-gfx110X-gpu-rocm"
+      },
+      "wsl": {
+        "test-runs-on": "wsl-gfx1101-gpu-rocm"
       }
     },
     "gfx1151": {

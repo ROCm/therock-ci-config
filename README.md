@@ -83,6 +83,10 @@ Contains GPU runner labels and build runner configurations:
 
 **`gpu_runner_labels`**:
 
+Each GPU family has one entry per platform: `linux`, `windows`, and optionally `wsl`. A `wsl` entry
+holds the runner label for WSL-hosted GPU runners (a Windows host whose GitHub runner runs inside
+WSL2). TheRock runs the Linux test matrix on it as separate opt-in `<job> (WSL)` jobs.
+
 | Field | Description |
 |-------|-------------|
 | `test-runs-on` | GitHub runner label for tests |
