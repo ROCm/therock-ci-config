@@ -89,6 +89,7 @@ Contains GPU runner labels and build runner configurations:
 | `test-runs-on-labels` | Weighted runner list for load balancing |
 | `test-runs-on-sandbox` | Sandbox runner label |
 | `test-runs-on-multi-gpu` | Runner label for multi-GPU tests |
+| `test-runs-on-wsl` | `linux` only: WSL-hosted GPU runner label. TheRock runs WSL-capable Linux tests there as non-blocking `<job> (WSL)` jobs with the `ci:run-wsl` label |
 | `benchmark-runs-on` | Runner label for benchmarks |
 
 ## Testing
