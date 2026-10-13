@@ -64,7 +64,10 @@
     },
     "gfx110x": {
       "linux": {
-        "test-runs-on": "linux-gfx110X-gpu-rocm"
+        "test-runs-on": "linux-gfx110X-gpu-rocm",
+        "test-runs-on-labels": [
+          {"label": "linux-gfx110X-gpu-rocm", "weight": 1.0, "count": 9}
+        ]
       },
       "windows": {
         "test-runs-on": "windows-gfx110X-gpu-rocm"
@@ -73,30 +76,42 @@
     "gfx1151": {
       "linux": {
         "test-runs-on": "linux-gfx1151-gpu-rocm",
+        "test-runs-on-labels": [
+          {"label": "linux-gfx1151-gpu-rocm", "weight": 1.0, "count": 8}
+        ],
         "test-runs-on-kernel": {
           "oem": "linux-strix-halo-gpu-rocm-oem"
         }
       },
       "windows": {
         "test-runs-on": "windows-gfx1151-gpu-rocm",
+        "test-runs-on-labels": [
+          {"label": "windows-gfx1151-gpu-rocm", "weight": 1.0, "count": 19}
+        ],
         "benchmark-runs-on": "windows-gfx1151-gpu-rocm"
       }
     },
     "gfx120x": {
       "linux": {
-        "test-runs-on": "linux-gfx120X-gpu-rocm"
+        "test-runs-on": "linux-gfx120X-gpu-rocm",
+        "test-runs-on-labels": [
+          {"label": "linux-gfx120X-gpu-rocm", "weight": 1.0, "count": 15}
+        ]
       },
       "windows": {
-        "test-runs-on": "windows-gfx120X-gpu-rocm"
+        "test-runs-on": "windows-gfx120X-gpu-rocm",
+        "test-runs-on-labels": [
+          {"label": "windows-gfx120X-gpu-rocm", "weight": 1.0, "count": 19}
+        ]
       }
     },
     "gfx90a": {
       "linux": {
         "test-runs-on": "linux-gfx90a-1gpu-ossci-rocm",
+        "_comment_disabled": "label: linux-gfx90a-gpu-rocm, count: 2, hangs",
         "test-runs-on-labels": [
-          {"label": "linux-gfx90a-gpu-rocm", "weight": 0.10, "count": 2},
-          {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.50, "count": 10},
-          {"label": "linux-mi210-1gpu-ossci-rocm", "weight": 0.40, "count": 8}
+          {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.56, "count": 10},
+          {"label": "linux-mi210-1gpu-ossci-rocm", "weight": 0.44, "count": 8}
         ],
         "test-runs-on-multi-gpu": "linux-gfx90a-8gpu-ossci-rocm",
         "test-runs-on-multi-gpu-labels": [
@@ -107,20 +122,24 @@
     },
     "gfx103x": {
       "linux": {
-        "test-runs-on": "linux-gfx1030-gpu-rocm"
+        "test-runs-on": "",
+        "_comment_disabled": "label: linux-gfx1030-gpu-rocm, count: 2, failure rate is 45%, component test failures"
       },
       "windows": {
-        "test-runs-on": "windows-gfx1030-gpu-rocm"
+        "test-runs-on": "",
+        "_comment_disabled": "label: windows-gfx1030-gpu-rocm, count: 6, failure rate is 27%, component test failures"
       }
     },
     "gfx1150": {
       "linux": {
-        "test-runs-on": "linux-gfx1150-gpu-rocm"
+        "test-runs-on": "",
+        "_comment_disabled": "label: linux-gfx1150-gpu-rocm, count: 2, failure rate is 30%, sanity check failure"
       }
     },
     "gfx1153": {
       "linux": {
-        "test-runs-on": "linux-gfx1153-gpu-rocm"
+        "test-runs-on": "",
+        "_comment_disabled": "label: linux-gfx1153-gpu-rocm, count: 3, failure rate is 85%, sanity check failure"
       }
     },
     "gfx125x": {
