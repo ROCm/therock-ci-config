@@ -16,7 +16,7 @@
           "weight": 0.0
         },
         {
-          "label": "az-linux-scale-rocm-dev-test",
+          "label": "az-linux-scale-rocm-default-dev-test",
           "weight": 1.0
         }
       ],
@@ -33,6 +33,10 @@
       "medium": [
         {
           "label": "aws-linux-scale-rocm-medium",
+          "weight": 0.0
+        },
+        {
+          "label": "az-linux-scale-rocm-medium-dev-test",
           "weight": 1.0
         }
       ],
