@@ -108,10 +108,10 @@
     "gfx90a": {
       "linux": {
         "test-runs-on": "linux-gfx90a-1gpu-ossci-rocm",
+        "_comment_disabled": "label: linux-gfx90a-gpu-rocm, count: 2, hangs",
         "test-runs-on-labels": [
-          {"label": "linux-gfx90a-gpu-rocm", "weight": 0.10, "count": 2},
-          {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.50, "count": 10},
-          {"label": "linux-mi210-1gpu-ossci-rocm", "weight": 0.40, "count": 8}
+          {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.56, "count": 10},
+          {"label": "linux-mi210-1gpu-ossci-rocm", "weight": 0.44, "count": 8}
         ],
         "test-runs-on-multi-gpu": "linux-gfx90a-8gpu-ossci-rocm",
         "test-runs-on-multi-gpu-labels": [
