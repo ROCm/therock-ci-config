@@ -16,12 +16,8 @@
                     "weight": 0.0
                 },
                 {
-                    "label": "az-dev-ws-test",
+                    "label": "az-linux-scale-rocm-default-dev-test",
                     "weight": 1.0
-                },
-                {
-                    "label": "az-prolense-test",
-                    "weight": 0.0
                 }
             ],
             "small": [
@@ -31,15 +27,7 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-dev-test",
-                    "weight": 0.0
-                },
-                {
-                    "label": "az-dev-ws-test",
                     "weight": 1.0
-                },
-                {
-                    "label": "az-prolense-test",
-                    "weight": 0.0
                 }
             ],
             "medium": [
@@ -48,7 +36,7 @@
                     "weight": 0.0
                 },
                 {
-                    "label": "az-linux-scale-rocm-default-dev-test",
+                    "label": "az-linux-scale-rocm-medium-dev-test",
                     "weight": 1.0
                 }
             ],
