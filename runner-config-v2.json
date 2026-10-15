@@ -16,7 +16,11 @@
                     "weight": 0.0
                 },
                 {
-                    "label": "az-linux-scale-rocm-default-dev-test",
+                    "label": "az-dev-ws-test",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-prolense-test",
                     "weight": 1.0
                 }
             ],
@@ -27,6 +31,14 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-dev-test",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-dev-ws-test",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-prolense-test",
                     "weight": 1.0
                 }
             ],
