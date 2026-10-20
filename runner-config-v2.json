@@ -152,7 +152,10 @@
         ]
       },
       "windows": {
-        "test-runs-on": "windows-gfx117x-gpu-rocm"
+        "test-runs-on": "windows-gfx117x-gpu-rocm",
+        "test-runs-on-labels": [
+          {"label": "windows-gfx117x-gpu-rocm", "weight": 1.0, "count": 1}
+        ]
       }
     },
     "gfx125x": {
