@@ -144,6 +144,17 @@
         "_comment_disabled": "label: linux-gfx1153-gpu-rocm, count: 3, failure rate is 85%, sanity check failure"
       }
     },
+    "gfx117x": {
+      "linux": {
+        "test-runs-on": "linux-gfx117x-gpu-rocm",
+        "test-runs-on-labels": [
+          {"label": "linux-gfx117x-gpu-rocm", "weight": 1.0, "count": 1}
+        ]
+      },
+      "windows": {
+        "test-runs-on": "windows-gfx117x-gpu-rocm"
+      }
+    },
     "gfx125x": {
       "linux": {
         "_comment": "NOTE: MI455 runner supply is very limited, only use for a narrow set of designated workflow runs. Label: linux-mi455-gpu-rocm",
