@@ -1,168 +1,208 @@
 {
-  "version": 2,
-  "_comment_runner_count_semantics": {
-    "gfx90a_gfx94X_gfx950": "1 count = 1 node (8 GPUs)",
-    "all_other_archs": "1 count = 1 GPU"
-  },
-  "build_runners": {
-    "linux": {
-      "default": [
-        {"label": "azure-linux-scale-rocm", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prod", "weight": 1.0}
-      ],
-      "small": [
-        {"label": "aws-linux-scale-rocm-small", "weight": 1.0}
-      ],
-      "medium": [
-        {"label": "aws-linux-scale-rocm-medium", "weight": 1.0}
-      ],
-      "sanitizer": [
-        {"label": "azure-linux-scale-rocm-heavy-ramdisk", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-large", "weight": 1.0}
-      ]
+    "version": 2,
+    "_comment_runner_count_semantics": {
+        "gfx90a_gfx94X_gfx950": "1 count = 1 node (8 GPUs)",
+        "all_other_archs": "1 count = 1 GPU"
     },
-    "windows": {
-      "default": [
-        {"label": "azure-windows-scale-rocm", "weight": 0.0},
-        {"label": "aws-windows-scale-rocm-prod", "weight": 0.0},
-        {"label": "aws-windows-scale-rocm-prod-mix", "weight": 1.0}
-      ]
-    }
-  },
-  "gpu_runner_labels": {
-    "gfx94x": {
-      "linux": {
-        "test-runs-on": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
-        "test-runs-on-labels": [
-          {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.85, "count": 28},
-          {"label": "linux-gfx942-1gpu-ccs-ossci-rocm", "weight": 0.15, "count": 5}
-        ],
-        "test-runs-on-sandbox": "linux-gfx942-8gpu-asan-sandbox-rocm",
-        "test-runs-on-sandbox-labels": [
-          {"label": "linux-gfx942-8gpu-asan-sandbox-rocm", "weight": 1.0, "count": 4}
-        ],
-        "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
-        "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 1.0, "count": 10}
-        ],
-        "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
-      }
-    },
-    "gfx950": {
-      "linux": {
-        "test-runs-on": "linux-gfx950-1gpu-ccs-ossci-rocm",
-        "test-runs-on-labels": [
-          {"label": "linux-gfx950-1gpu-ccs-ossci-rocm", "weight": 1.0, "count": 9}
-        ],
-        "test-runs-on-sandbox": "linux-gfx950-8gpu-asan-sandbox-rocm",
-        "test-runs-on-sandbox-labels": [
-          {"label": "linux-gfx950-8gpu-asan-sandbox-rocm", "weight": 1.0, "count": 4}
-        ],
-        "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
-        "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx950-8gpu-ccs-ossci-rocm", "weight": 1.0, "count": 2}
-        ]
-      }
-    },
-    "gfx110x": {
-      "linux": {
-        "test-runs-on": "linux-gfx110X-gpu-rocm",
-        "test-runs-on-labels": [
-          {"label": "linux-gfx110X-gpu-rocm", "weight": 1.0, "count": 9}
-        ]
-      },
-      "windows": {
-        "test-runs-on": "windows-gfx110X-gpu-rocm"
-      }
-    },
-    "gfx1151": {
-      "linux": {
-        "test-runs-on": "linux-gfx1151-gpu-rocm",
-        "test-runs-on-labels": [
-          {"label": "linux-gfx1151-gpu-rocm", "weight": 1.0, "count": 8}
-        ],
-        "test-runs-on-kernel": {
-          "oem": "linux-strix-halo-gpu-rocm-oem"
+    "build_runners": {
+        "linux": {
+            "default": [
+                {
+                    "label": "azure-linux-scale-rocm",
+                    "weight": 0.0
+                },
+                {
+                    "label": "aws-linux-scale-rocm-prod",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-linux-scale-rocm-default-dev",
+                    "weight": 1.0
+                }
+            ],
+            "small": [
+                {
+                    "label": "aws-linux-scale-rocm-small",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-linux-scale-rocm-small-dev",
+                    "weight": 1.0
+                }
+            ],
+            "medium": [
+                {
+                    "label": "aws-linux-scale-rocm-medium",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-linux-scale-rocm-medium-dev",
+                    "weight": 1.0
+                }
+            ],
+            "sanitizer": [
+                {
+                    "label": "azure-linux-scale-rocm-heavy-ramdisk",
+                    "weight": 0.0
+                },
+                {
+                    "label": "aws-linux-scale-rocm-large",
+                    "weight": 1.0
+                }
+            ]
+        },
+        "windows": {
+            "default": [
+                {
+                    "label": "azure-windows-scale-rocm",
+                    "weight": 0.0
+                },
+                {
+                    "label": "aws-windows-scale-rocm-prod",
+                    "weight": 0.0
+                },
+                {
+                    "label": "aws-windows-scale-rocm-prod-mix",
+                    "weight": 1.0
+                }
+            ]
         }
-      },
-      "windows": {
-        "test-runs-on": "windows-gfx1151-gpu-rocm",
-        "test-runs-on-labels": [
-          {"label": "windows-gfx1151-gpu-rocm", "weight": 1.0, "count": 19}
-        ],
-        "benchmark-runs-on": "windows-gfx1151-gpu-rocm"
-      }
     },
-    "gfx120x": {
-      "linux": {
-        "test-runs-on": "linux-gfx120X-gpu-rocm",
-        "test-runs-on-labels": [
-          {"label": "linux-gfx120X-gpu-rocm", "weight": 1.0, "count": 15}
-        ]
-      },
-      "windows": {
-        "test-runs-on": "windows-gfx120X-gpu-rocm",
-        "test-runs-on-labels": [
-          {"label": "windows-gfx120X-gpu-rocm", "weight": 1.0, "count": 19}
-        ]
-      }
-    },
-    "gfx90a": {
-      "linux": {
-        "test-runs-on": "linux-gfx90a-1gpu-ossci-rocm",
-        "_comment_disabled": "label: linux-gfx90a-gpu-rocm, count: 2, hangs",
-        "test-runs-on-labels": [
-          {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.56, "count": 10},
-          {"label": "linux-mi210-1gpu-ossci-rocm", "weight": 0.44, "count": 8}
-        ],
-        "test-runs-on-multi-gpu": "linux-gfx90a-8gpu-ossci-rocm",
-        "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx90a-8gpu-ossci-rocm", "weight": 0.50, "count": 2},
-          {"label": "linux-mi210-8gpu-ossci-rocm", "weight": 0.50, "count": 2}
-        ]
-      }
-    },
-    "gfx103x": {
-      "linux": {
-        "test-runs-on": "",
-        "_comment_disabled": "label: linux-gfx1030-gpu-rocm, count: 2, failure rate is 45%, component test failures"
-      },
-      "windows": {
-        "test-runs-on": "",
-        "_comment_disabled": "label: windows-gfx1030-gpu-rocm, count: 6, failure rate is 27%, component test failures"
-      }
-    },
-    "gfx1150": {
-      "linux": {
-        "test-runs-on": "",
-        "_comment_disabled": "label: linux-gfx1150-gpu-rocm, count: 2, failure rate is 30%, sanity check failure"
-      }
-    },
-    "gfx1153": {
-      "linux": {
-        "test-runs-on": "",
-        "_comment_disabled": "label: linux-gfx1153-gpu-rocm, count: 3, failure rate is 85%, sanity check failure"
-      }
-    },
-    "gfx117x": {
-      "linux": {
-        "test-runs-on": "linux-gfx117x-gpu-rocm",
-        "test-runs-on-labels": [
-          {"label": "linux-gfx117x-gpu-rocm", "weight": 1.0, "count": 1}
-        ]
-      },
-      "windows": {
-        "test-runs-on": "windows-gfx117x-gpu-rocm",
-        "test-runs-on-labels": [
-          {"label": "windows-gfx117x-gpu-rocm", "weight": 1.0, "count": 1}
-        ]
-      }
-    },
-    "gfx125x": {
-      "linux": {
-        "_comment": "NOTE: MI455 runner supply is very limited, only use for a narrow set of designated workflow runs. Label: linux-mi455-gpu-rocm",
-        "test-runs-on": "linux-mi455-gpu-rocm"
-      }
+    "gpu_runner_labels": {
+        "gfx94x": {
+            "linux": {
+                "test-runs-on": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
+                "_comment_disabled_ossci_due_to_outdated_drivers": "linux-gfx942-1gpu-ccs-ossci-rocm disabled - see users/geomin12/old-ccs-check branch",
+                "test-runs-on-labels": [
+                    {
+                        "label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
+                        "weight": 1.0,
+                        "count": 28
+                    }
+                ],
+                "test-runs-on-sandbox": "",
+                "_comment_sandbox_disabled": "label: linux-gfx942-8gpu-asan-sandbox-rocm, count: 4",
+                "test-runs-on-sandbox-labels": [],
+                "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
+                "test-runs-on-multi-gpu-labels": [
+                    {
+                        "label": "linux-gfx942-8gpu-ossci-rocm",
+                        "weight": 1.0,
+                        "count": 10
+                    }
+                ],
+                "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
+            }
+        },
+        "gfx950": {
+            "linux": {
+                "test-runs-on": "linux-gfx950-1gpu-ccs-ossci-rocm",
+                "test-runs-on-labels": [
+                    {
+                        "label": "linux-gfx950-1gpu-ccs-ossci-rocm",
+                        "weight": 1.0,
+                        "count": 3
+                    }
+                ],
+                "test-runs-on-sandbox": "",
+                "_comment_sandbox_disabled": "label: linux-gfx950-8gpu-asan-sandbox-rocm, count: 4",
+                "test-runs-on-sandbox-labels": [],
+                "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
+                "test-runs-on-multi-gpu-labels": [
+                    {
+                        "label": "linux-gfx950-8gpu-ccs-ossci-rocm",
+                        "weight": 1.0,
+                        "count": 2
+                    }
+                ]
+            }
+        },
+        "gfx110x": {
+            "linux": {
+                "test-runs-on": "linux-gfx110X-gpu-rocm"
+            },
+            "windows": {
+                "test-runs-on": "windows-gfx110X-gpu-rocm"
+            }
+        },
+        "gfx1151": {
+            "linux": {
+                "test-runs-on": "linux-gfx1151-gpu-rocm",
+                "test-runs-on-kernel": {
+                    "oem": "linux-strix-halo-gpu-rocm-oem"
+                }
+            },
+            "windows": {
+                "test-runs-on": "windows-gfx1151-gpu-rocm",
+                "benchmark-runs-on": "windows-gfx1151-gpu-rocm"
+            }
+        },
+        "gfx120x": {
+            "linux": {
+                "test-runs-on": "linux-gfx120X-gpu-rocm"
+            },
+            "windows": {
+                "test-runs-on": "windows-gfx120X-gpu-rocm"
+            }
+        },
+        "gfx90a": {
+            "linux": {
+                "test-runs-on": "linux-gfx90a-1gpu-ossci-rocm",
+                "test-runs-on-labels": [
+                    {
+                        "label": "linux-gfx90a-gpu-rocm",
+                        "weight": 0.1,
+                        "count": 2
+                    },
+                    {
+                        "label": "linux-gfx90a-1gpu-ossci-rocm",
+                        "weight": 0.5,
+                        "count": 10
+                    },
+                    {
+                        "label": "linux-mi210-1gpu-ossci-rocm",
+                        "weight": 0.4,
+                        "count": 8
+                    }
+                ],
+                "test-runs-on-multi-gpu": "linux-gfx90a-8gpu-ossci-rocm",
+                "test-runs-on-multi-gpu-labels": [
+                    {
+                        "label": "linux-gfx90a-8gpu-ossci-rocm",
+                        "weight": 0.5,
+                        "count": 2
+                    },
+                    {
+                        "label": "linux-mi210-8gpu-ossci-rocm",
+                        "weight": 0.5,
+                        "count": 2
+                    }
+                ]
+            }
+        },
+        "gfx103x": {
+            "linux": {
+                "test-runs-on": "linux-gfx1030-gpu-rocm"
+            },
+            "windows": {
+                "test-runs-on": "windows-gfx1030-gpu-rocm"
+            }
+        },
+        "gfx1150": {
+            "linux": {
+                "test-runs-on": "linux-gfx1150-gpu-rocm"
+            }
+        },
+        "gfx1153": {
+            "linux": {
+                "test-runs-on": "linux-gfx1153-gpu-rocm"
+            }
+        },
+        "gfx125x": {
+            "linux": {
+                "_comment": "NOTE: MI455 runner supply is very limited, only use for a narrow set of designated workflow runs. Label: linux-mi455-gpu-rocm",
+                "test-runs-on": "linux-mi455-gpu-rocm"
+            }
+        }
     }
-  }
 }
