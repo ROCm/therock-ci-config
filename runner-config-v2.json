@@ -79,6 +79,10 @@
                 },
                 {
                     "label": "az-windows-scale-rocm-default-dev",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-windows-scale-rocm-default-prod",
                     "weight": 1.0
                 }
             ]
