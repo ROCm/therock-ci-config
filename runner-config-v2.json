@@ -8,13 +8,16 @@
     "linux": {
       "default": [
         {"label": "azure-linux-scale-rocm", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prod", "weight": 1.0}
+        {"label": "aws-linux-scale-rocm-prod", "weight": 0.95},
+        {"label": "az-linux-scale-rocm-default-prod", "weight": 0.05}
       ],
       "small": [
-        {"label": "aws-linux-scale-rocm-small", "weight": 1.0}
+        {"label": "aws-linux-scale-rocm-small", "weight": 0.95},
+        {"label": "az-linux-scale-rocm-small-prod", "weight": 0.05}
       ],
       "medium": [
-        {"label": "aws-linux-scale-rocm-medium", "weight": 1.0}
+        {"label": "aws-linux-scale-rocm-medium", "weight": 0.95},
+        {"label": "az-linux-scale-rocm-medium-prod", "weight": 0.05}
       ],
       "sanitizer": [
         {"label": "azure-linux-scale-rocm-heavy-ramdisk", "weight": 0.0},
