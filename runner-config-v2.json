@@ -72,7 +72,8 @@
         "test-runs-on": "linux-gfx110X-gpu-rocm",
         "test-runs-on-labels": [
           {"label": "linux-gfx110X-gpu-rocm", "weight": 1.0, "count": 9}
-        ]
+        ],
+        "test-runs-on-wsl": "wsl-gfx1101-gpu-rocm"
       },
       "windows": {
         "test-runs-on": "windows-gfx110X-gpu-rocm"
