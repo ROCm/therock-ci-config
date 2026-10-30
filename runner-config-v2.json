@@ -17,6 +17,10 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-default-prod",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-linux-scale-rocm-default-dev",
                     "weight": 1.0
                 }
             ],
@@ -27,6 +31,10 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-small-prod",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-linux-scale-rocm-small-dev",
                     "weight": 1.0
                 }
             ],
@@ -37,6 +45,10 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-medium-prod",
+                    "weight": 0.0
+                },
+                {
+                    "label": "az-linux-scale-rocm-medium-dev",
                     "weight": 1.0
                 }
             ],
