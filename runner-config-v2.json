@@ -17,11 +17,11 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-default-prod",
-                    "weight": 0.0
+                    "weight": 1.0
                 },
                 {
                     "label": "az-linux-scale-rocm-default-dev",
-                    "weight": 1.0
+                    "weight": 0.0
                 }
             ],
             "small": [
@@ -45,11 +45,11 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-medium-prod",
-                    "weight": 0.0
+                    "weight": 1.0
                 },
                 {
                     "label": "az-linux-scale-rocm-medium-dev",
-                    "weight": 1.0
+                    "weight": 0.0
                 }
             ],
             "sanitizer": [
