@@ -31,11 +31,11 @@
                 },
                 {
                     "label": "az-linux-scale-rocm-small-prod",
-                    "weight": 0.0
+                    "weight": 1.0
                 },
                 {
                     "label": "az-linux-scale-rocm-small-dev",
-                    "weight": 1.0
+                    "weight": 0.0
                 }
             ],
             "medium": [
