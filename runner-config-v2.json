@@ -7,28 +7,64 @@
   "build_runners": {
     "linux": {
       "default": [
-        {"label": "azure-linux-scale-rocm", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-prod", "weight": 0.80},
-        {"label": "az-linux-scale-rocm-default-prod", "weight": 0.20}
+        {
+          "label": "azure-linux-scale-rocm",
+          "weight": 0.0
+        },
+        {
+          "label": "aws-linux-scale-rocm-prod",
+          "weight": 0.5
+        },
+        {
+          "label": "az-linux-scale-rocm-default-prod",
+          "weight": 0.5
+        }
       ],
       "small": [
-        {"label": "aws-linux-scale-rocm-small", "weight": 0.80},
-        {"label": "az-linux-scale-rocm-small-prod", "weight": 0.20}
+        {
+          "label": "aws-linux-scale-rocm-small",
+          "weight": 0.5
+        },
+        {
+          "label": "az-linux-scale-rocm-small-prod",
+          "weight": 0.5
+        }
       ],
       "medium": [
-        {"label": "aws-linux-scale-rocm-medium", "weight": 0.80},
-        {"label": "az-linux-scale-rocm-medium-prod", "weight": 0.20}
+        {
+          "label": "aws-linux-scale-rocm-medium",
+          "weight": 0.5
+        },
+        {
+          "label": "az-linux-scale-rocm-medium-prod",
+          "weight": 0.5
+        }
       ],
       "sanitizer": [
-        {"label": "azure-linux-scale-rocm-heavy-ramdisk", "weight": 0.0},
-        {"label": "aws-linux-scale-rocm-large", "weight": 1.0}
+        {
+          "label": "azure-linux-scale-rocm-heavy-ramdisk",
+          "weight": 0.0
+        },
+        {
+          "label": "aws-linux-scale-rocm-large",
+          "weight": 1.0
+        }
       ]
     },
     "windows": {
       "default": [
-        {"label": "azure-windows-scale-rocm", "weight": 0.0},
-        {"label": "aws-windows-scale-rocm-prod", "weight": 0.0},
-        {"label": "aws-windows-scale-rocm-prod-mix", "weight": 1.0}
+        {
+          "label": "azure-windows-scale-rocm",
+          "weight": 0.0
+        },
+        {
+          "label": "aws-windows-scale-rocm-prod",
+          "weight": 0.0
+        },
+        {
+          "label": "aws-windows-scale-rocm-prod-mix",
+          "weight": 1.0
+        }
       ]
     }
   },
@@ -37,16 +73,32 @@
       "linux": {
         "test-runs-on": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm", "weight": 0.85, "count": 28},
-          {"label": "linux-gfx942-1gpu-ccs-ossci-rocm", "weight": 0.15, "count": 5}
+          {
+            "label": "linux-gfx942-1gpu-ccs-csp-ossci-rocm",
+            "weight": 0.85,
+            "count": 28
+          },
+          {
+            "label": "linux-gfx942-1gpu-ccs-ossci-rocm",
+            "weight": 0.15,
+            "count": 5
+          }
         ],
         "test-runs-on-sandbox": "linux-gfx942-8gpu-asan-sandbox-rocm",
         "test-runs-on-sandbox-labels": [
-          {"label": "linux-gfx942-8gpu-asan-sandbox-rocm", "weight": 1.0, "count": 4}
+          {
+            "label": "linux-gfx942-8gpu-asan-sandbox-rocm",
+            "weight": 1.0,
+            "count": 4
+          }
         ],
         "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
         "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx942-8gpu-ossci-rocm", "weight": 1.0, "count": 10}
+          {
+            "label": "linux-gfx942-8gpu-ossci-rocm",
+            "weight": 1.0,
+            "count": 10
+          }
         ],
         "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
       }
@@ -55,15 +107,27 @@
       "linux": {
         "test-runs-on": "linux-gfx950-1gpu-ccs-ossci-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx950-1gpu-ccs-ossci-rocm", "weight": 1.0, "count": 9}
+          {
+            "label": "linux-gfx950-1gpu-ccs-ossci-rocm",
+            "weight": 1.0,
+            "count": 9
+          }
         ],
         "test-runs-on-sandbox": "linux-gfx950-8gpu-asan-sandbox-rocm",
         "test-runs-on-sandbox-labels": [
-          {"label": "linux-gfx950-8gpu-asan-sandbox-rocm", "weight": 1.0, "count": 4}
+          {
+            "label": "linux-gfx950-8gpu-asan-sandbox-rocm",
+            "weight": 1.0,
+            "count": 4
+          }
         ],
         "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
         "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx950-8gpu-ccs-ossci-rocm", "weight": 1.0, "count": 2}
+          {
+            "label": "linux-gfx950-8gpu-ccs-ossci-rocm",
+            "weight": 1.0,
+            "count": 2
+          }
         ]
       }
     },
@@ -71,7 +135,11 @@
       "linux": {
         "test-runs-on": "linux-gfx110X-gpu-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx110X-gpu-rocm", "weight": 1.0, "count": 9}
+          {
+            "label": "linux-gfx110X-gpu-rocm",
+            "weight": 1.0,
+            "count": 9
+          }
         ],
         "test-runs-on-wsl": "wsl-gfx1101-gpu-rocm"
       },
@@ -83,7 +151,11 @@
       "linux": {
         "test-runs-on": "linux-gfx1151-gpu-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx1151-gpu-rocm", "weight": 1.0, "count": 8}
+          {
+            "label": "linux-gfx1151-gpu-rocm",
+            "weight": 1.0,
+            "count": 8
+          }
         ],
         "test-runs-on-kernel": {
           "oem": "linux-strix-halo-gpu-rocm-oem"
@@ -92,7 +164,11 @@
       "windows": {
         "test-runs-on": "windows-gfx1151-gpu-rocm",
         "test-runs-on-labels": [
-          {"label": "windows-gfx1151-gpu-rocm", "weight": 1.0, "count": 19}
+          {
+            "label": "windows-gfx1151-gpu-rocm",
+            "weight": 1.0,
+            "count": 19
+          }
         ],
         "benchmark-runs-on": "windows-gfx1151-gpu-rocm"
       }
@@ -101,13 +177,21 @@
       "linux": {
         "test-runs-on": "linux-gfx120X-gpu-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx120X-gpu-rocm", "weight": 1.0, "count": 15}
+          {
+            "label": "linux-gfx120X-gpu-rocm",
+            "weight": 1.0,
+            "count": 15
+          }
         ]
       },
       "windows": {
         "test-runs-on": "windows-gfx120X-gpu-rocm",
         "test-runs-on-labels": [
-          {"label": "windows-gfx120X-gpu-rocm", "weight": 1.0, "count": 19}
+          {
+            "label": "windows-gfx120X-gpu-rocm",
+            "weight": 1.0,
+            "count": 19
+          }
         ]
       }
     },
@@ -116,13 +200,29 @@
         "test-runs-on": "linux-gfx90a-1gpu-ossci-rocm",
         "_comment_disabled": "label: linux-gfx90a-gpu-rocm, count: 2, hangs",
         "test-runs-on-labels": [
-          {"label": "linux-gfx90a-1gpu-ossci-rocm", "weight": 0.56, "count": 10},
-          {"label": "linux-mi210-1gpu-ossci-rocm", "weight": 0.44, "count": 8}
+          {
+            "label": "linux-gfx90a-1gpu-ossci-rocm",
+            "weight": 0.56,
+            "count": 10
+          },
+          {
+            "label": "linux-mi210-1gpu-ossci-rocm",
+            "weight": 0.44,
+            "count": 8
+          }
         ],
         "test-runs-on-multi-gpu": "linux-gfx90a-8gpu-ossci-rocm",
         "test-runs-on-multi-gpu-labels": [
-          {"label": "linux-gfx90a-8gpu-ossci-rocm", "weight": 0.50, "count": 2},
-          {"label": "linux-mi210-8gpu-ossci-rocm", "weight": 0.50, "count": 2}
+          {
+            "label": "linux-gfx90a-8gpu-ossci-rocm",
+            "weight": 0.5,
+            "count": 2
+          },
+          {
+            "label": "linux-mi210-8gpu-ossci-rocm",
+            "weight": 0.5,
+            "count": 2
+          }
         ]
       }
     },
@@ -152,13 +252,21 @@
       "linux": {
         "test-runs-on": "linux-gfx117x-gpu-rocm",
         "test-runs-on-labels": [
-          {"label": "linux-gfx117x-gpu-rocm", "weight": 1.0, "count": 1}
+          {
+            "label": "linux-gfx117x-gpu-rocm",
+            "weight": 1.0,
+            "count": 1
+          }
         ]
       },
       "windows": {
         "test-runs-on": "windows-gfx117x-gpu-rocm",
         "test-runs-on-labels": [
-          {"label": "windows-gfx117x-gpu-rocm", "weight": 1.0, "count": 1}
+          {
+            "label": "windows-gfx117x-gpu-rocm",
+            "weight": 1.0,
+            "count": 1
+          }
         ]
       }
     },
