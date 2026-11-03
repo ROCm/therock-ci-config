@@ -54,6 +54,9 @@
           "weight": 0.9
         }
       ],
+      "bump": [
+        {"label": "aws-linux-scale-rocm-prod", "weight": 1.0}
+      ],
       "sanitizer": [
         {
           "label": "azure-linux-scale-rocm-heavy-ramdisk",
