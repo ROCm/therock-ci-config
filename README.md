@@ -78,6 +78,7 @@ Contains GPU runner labels and build runner configurations:
 | Field | Description |
 |-------|-------------|
 | `linux.default` | Weighted runner list for standard Linux builds |
+| `linux.bump` | Weighted runner list for submodule bump PRs (used for PRs updating git submodules, typically created by automation) |
 | `linux.sanitizer` | Weighted runner list for sanitizer builds (asan, tsan) |
 | `windows.default` | Weighted runner list for Windows builds |
 
