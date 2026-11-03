@@ -17,7 +17,11 @@
         },
         {
           "label": "az-linux-scale-rocm-default-prod",
-          "weight": 0.5
+          "weight": 0.25
+        },
+        {
+          "label": "az-linux-scale-rocm-hb-prod",
+          "weight": 0.25
         }
       ],
       "small": [
