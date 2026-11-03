@@ -19,6 +19,9 @@
         {"label": "aws-linux-scale-rocm-medium", "weight": 0.90},
         {"label": "az-linux-scale-rocm-medium-prod", "weight": 0.10}
       ],
+      "bump": [
+        {"label": "aws-linux-scale-rocm-prod", "weight": 1.0}
+      ],
       "sanitizer": [
         {"label": "azure-linux-scale-rocm-heavy-ramdisk", "weight": 0.0},
         {"label": "aws-linux-scale-rocm-large", "weight": 1.0}
