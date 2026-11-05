@@ -57,11 +57,11 @@
                 },
                 {
                     "label": "aws-linux-scale-rocm-large",
-                    "weight": 0.0
+                    "weight": 0.5
                 },
                 {
                     "label": "az-linux-scale-rocm-default-prod",
-                    "weight": 1.0
+                    "weight": 0.5
                 }
             ]
         },
