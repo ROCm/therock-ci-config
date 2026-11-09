@@ -13,39 +13,42 @@
         },
         {
           "label": "aws-linux-scale-rocm-prod",
-          "weight": 0.5
+          "weight": 0.25
         },
         {
           "label": "az-linux-scale-rocm-default-prod",
-          "weight": 0.25
+          "weight": 0.75
         },
         {
           "label": "az-linux-scale-rocm-hb-prod",
-          "weight": 0.25
+          "weight": 0.0
         }
       ],
       "small": [
         {
           "label": "aws-linux-scale-rocm-small",
-          "weight": 0.5
+          "weight": 0.25
         },
         {
           "label": "az-linux-scale-rocm-small-prod",
-          "weight": 0.5
+          "weight": 0.75
         }
       ],
       "medium": [
         {
           "label": "aws-linux-scale-rocm-medium",
-          "weight": 0.5
+          "weight": 0.25
         },
         {
           "label": "az-linux-scale-rocm-medium-prod",
-          "weight": 0.5
+          "weight": 0.75
         }
       ],
       "bump": [
-        {"label": "aws-linux-scale-rocm-prod", "weight": 1.0}
+        {
+          "label": "aws-linux-scale-rocm-prod",
+          "weight": 1.0
+        }
       ],
       "sanitizer": [
         {
