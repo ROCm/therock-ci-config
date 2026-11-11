@@ -111,7 +111,7 @@
           {
             "label": "linux-gfx942-8gpu-ossci-rocm",
             "weight": 1.0,
-            "count": 10
+            "count": 8
           }
         ],
         "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
