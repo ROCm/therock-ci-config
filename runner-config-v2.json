@@ -6,7 +6,7 @@
   },
   "_comment_multi_gpu_tiers": {
     "test-runs-on-multi-gpu": "Default (8-GPU) pool. Used by any multi-GPU component that does not request a specific GPU-count tier.",
-    "test-runs-on-<N>gpu": "Optional pool for components that only need N GPUs (e.g. test-runs-on-2gpu for rccl). Components opt in via 'gpu_count' in TheRock's fetch_test_configurations.py. Falls back to test-runs-on-multi-gpu when the tier is not configured for a family."
+    "test-runs-on-<N>gpu": "Optional pool for components that only need N GPUs (e.g. test-runs-on-2gpu for rccl). Components opt in via 'multi_gpu_pool' in TheRock's fetch_test_configurations.py. A family without the pool does not run those components at all -- they are skipped rather than falling back onto the scarce 8-GPU nodes."
   },
   "build_runners": {
     "linux": {
@@ -152,15 +152,6 @@
         "test-runs-on-multi-gpu-labels": [
           {
             "label": "linux-gfx950-8gpu-ccs-ossci-rocm",
-            "weight": 1.0,
-            "count": 2
-          }
-        ],
-        "_comment_2gpu": "TODO: confirm final label name and count once the 2-GPU pool is registered.",
-        "test-runs-on-2gpu": "linux-gfx950-2gpu-ccs-ossci-rocm",
-        "test-runs-on-2gpu-labels": [
-          {
-            "label": "linux-gfx950-2gpu-ccs-ossci-rocm",
             "weight": 1.0,
             "count": 2
           }
