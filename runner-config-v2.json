@@ -64,11 +64,11 @@
         },
         {
           "label": "aws-linux-scale-rocm-large",
-          "weight": 1.0
+          "weight": 0.0
         },
         {
           "label": "az-linux-scale-rocm-asan-dev",
-          "weight": 0.0
+          "weight": 1.0
         }
       ]
     },
