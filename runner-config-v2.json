@@ -118,11 +118,19 @@
             "count": 8
           }
         ],
-        "_comment_2gpu": "TODO: confirm final label name and count once the 2-GPU pool is registered.",
+        "_comment_gpu_slices": "2-GPU and 4-GPU slices of the 8-GPU hosts. Counts are placeholders until the slices are registered; see ROCm/TheRock#5623.",
         "test-runs-on-2gpu": "linux-gfx942-2gpu-ossci-rocm",
         "test-runs-on-2gpu-labels": [
           {
             "label": "linux-gfx942-2gpu-ossci-rocm",
+            "weight": 1.0,
+            "count": 2
+          }
+        ],
+        "test-runs-on-4gpu": "linux-gfx942-4gpu-ossci-rocm",
+        "test-runs-on-4gpu-labels": [
+          {
+            "label": "linux-gfx942-4gpu-ossci-rocm",
             "weight": 1.0,
             "count": 2
           }
