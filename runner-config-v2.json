@@ -4,6 +4,10 @@
     "gfx90a_gfx94X_gfx950": "1 count = 1 node (8 GPUs)",
     "all_other_archs": "1 count = 1 GPU"
   },
+  "_comment_multi_gpu_tiers": {
+    "test-runs-on-multi-gpu": "Default (8-GPU) pool. Used by any multi-GPU component that does not request a specific GPU-count tier.",
+    "test-runs-on-<N>gpu": "Optional pool for components that only need N GPUs (e.g. test-runs-on-2gpu for rccl). Components opt in via 'multi_gpu_pool' in TheRock's fetch_test_configurations.py. A family without the pool does not run those components at all -- they are skipped rather than falling back onto the scarce 8-GPU nodes."
+  },
   "build_runners": {
     "linux": {
       "default": [
@@ -116,6 +120,23 @@
             "label": "linux-gfx942-8gpu-ossci-rocm",
             "weight": 1.0,
             "count": 8
+          }
+        ],
+        "_comment_gpu_slices": "2-GPU and 4-GPU slices of the 8-GPU hosts. Counts are placeholders until the slices are registered; see ROCm/TheRock#5623.",
+        "test-runs-on-2gpu": "linux-gfx942-2gpu-ossci-rocm",
+        "test-runs-on-2gpu-labels": [
+          {
+            "label": "linux-gfx942-2gpu-ossci-rocm",
+            "weight": 1.0,
+            "count": 2
+          }
+        ],
+        "test-runs-on-4gpu": "linux-gfx942-4gpu-ossci-rocm",
+        "test-runs-on-4gpu-labels": [
+          {
+            "label": "linux-gfx942-4gpu-ossci-rocm",
+            "weight": 1.0,
+            "count": 2
           }
         ],
         "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
