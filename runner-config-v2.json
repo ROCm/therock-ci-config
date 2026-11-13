@@ -47,11 +47,11 @@
       "bump": [
         {
           "label": "aws-linux-scale-rocm-prod",
-          "weight": 0.05
+          "weight": 0.5
         },
         {
           "label": "az-linux-scale-rocm-default-prod",
-          "weight": 0.95
+          "weight": 0.5
         }
       ],
       "sanitizer": [
