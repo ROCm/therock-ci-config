@@ -64,6 +64,10 @@
         },
         {
           "label": "aws-linux-scale-rocm-large",
+          "weight": 0.0
+        },
+        {
+          "label": "az-linux-scale-rocm-asanf-prod",
           "weight": 1.0
         }
       ]
