@@ -102,12 +102,12 @@
             "count": 5
           }
         ],
-        "test-runs-on-sandbox": "linux-gfx942-8gpu-asan-sandbox-rocm",
+        "test-runs-on-sandbox": "linux-gfx942-1gpu-asan-sandbox-rocm",
         "test-runs-on-sandbox-labels": [
           {
-            "label": "linux-gfx942-8gpu-asan-sandbox-rocm",
+            "label": "linux-gfx942-1gpu-asan-sandbox-rocm",
             "weight": 1.0,
-            "count": 4
+            "count": 32
           }
         ],
         "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
@@ -131,12 +131,12 @@
             "count": 9
           }
         ],
-        "test-runs-on-sandbox": "linux-gfx950-8gpu-asan-sandbox-rocm",
+        "test-runs-on-sandbox": "linux-gfx950-1gpu-asan-sandbox-rocm",
         "test-runs-on-sandbox-labels": [
           {
-            "label": "linux-gfx950-8gpu-asan-sandbox-rocm",
+            "label": "linux-gfx950-1gpu-asan-sandbox-rocm",
             "weight": 1.0,
-            "count": 4
+            "count": 32
           }
         ],
         "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
