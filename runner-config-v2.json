@@ -107,7 +107,7 @@
           {
             "label": "linux-gfx942-1gpu-asan-sandbox-rocm",
             "weight": 1.0,
-            "count": 32
+            "count": 4
           }
         ],
         "test-runs-on-multi-gpu": "linux-gfx942-8gpu-ossci-rocm",
@@ -136,7 +136,7 @@
           {
             "label": "linux-gfx950-1gpu-asan-sandbox-rocm",
             "weight": 1.0,
-            "count": 32
+            "count": 4
           }
         ],
         "test-runs-on-multi-gpu": "linux-gfx950-8gpu-ccs-ossci-rocm",
