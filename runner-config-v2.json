@@ -127,7 +127,7 @@
           {
             "label": "linux-gfx942-2gpu-ossci-rocm",
             "weight": 1.0,
-            "count": 12
+            "count": 3
           }
         ],
         "test-runs-on-4gpu": "linux-gfx942-4gpu-ossci-rocm",
@@ -135,7 +135,7 @@
           {
             "label": "linux-gfx942-4gpu-ossci-rocm",
             "weight": 1.0,
-            "count": 4
+            "count": 2
           }
         ],
         "benchmark-runs-on": "linux-gfx942-8gpu-ossci-rocm"
