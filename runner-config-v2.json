@@ -166,7 +166,28 @@
             "weight": 1.0,
             "count": 2
           }
-        ]
+        ],
+        "test-runs-on-apptainer-labels": [
+          {
+            "label": "linux-gfx950-1gpu-crusoe-rocm",
+            "weight": 1.0,
+            "count": 3
+          }
+        ],
+        "test-runs-on-multi-gpu-apptainer-labels": [
+          {
+            "label": "linux-gfx950-8gpu-crusoe-rocm",
+            "weight": 1.0,
+            "count": 4
+          }
+        ],
+        "onboarding-runners": {
+          "labels": [
+            "linux-gfx950-1gpu-crusoe-rocm",
+            "linux-gfx950-8gpu-crusoe-rocm"
+          ],
+          "repositories": ["ROCm/TheRock"]
+        }
       }
     },
     "gfx110x": {
