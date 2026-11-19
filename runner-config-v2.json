@@ -81,11 +81,11 @@
         },
         {
           "label": "aws-windows-scale-rocm-prod-mix",
-          "weight": 0.5
+          "weight": 0.0
         },
         {
           "label": "az-windows-scale-rocm-default-prod",
-          "weight": 0.5
+          "weight": 1.0
         }
       ]
     }
