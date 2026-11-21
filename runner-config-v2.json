@@ -186,7 +186,7 @@
             "linux-gfx950-1gpu-crusoe-rocm",
             "linux-gfx950-8gpu-crusoe-rocm"
           ],
-          "repositories": ["ROCm/TheRock"]
+          "repositories": ["ROCm/TheRock", "ROCm/rocm-libraries"]
         }
       }
     },
