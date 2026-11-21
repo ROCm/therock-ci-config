@@ -160,6 +160,49 @@ class TestSchemaValidation(unittest.TestCase):
                         msg=f"{family_name}/{platform} test-runs-on-multi-gpu-labels weights sum to {total_weight}, expected 1.0",
                     )
 
+    def test_apptainer_labels_extend_an_existing_pool(self):
+        """Apptainer pools are drawn together with their base pool by `count`."""
+        base_keys = {
+            "test-runs-on-apptainer-labels": "test-runs-on-labels",
+            "test-runs-on-multi-gpu-apptainer-labels": "test-runs-on-multi-gpu-labels",
+        }
+        config = load_config()
+        for family_name, platforms in config.gpu_runner_labels.items():
+            for platform, settings in platforms.items():
+                for key, base_key in base_keys.items():
+                    if key not in settings:
+                        continue
+                    where = f"{family_name}/{platform} {key}"
+                    self.assertIn(base_key, settings, msg=where)
+                    for label in settings[base_key] + settings[key]:
+                        self.assertIn("count", label, msg=where)
+                    total_weight = sum(label["weight"] for label in settings[key])
+                    self.assertAlmostEqual(total_weight, 1.0, places=2, msg=where)
+
+    def test_onboarding_runners_name_pooled_labels_and_repositories(self):
+        """`onboarding-runners` limits its labels to jobs of the listed repositories."""
+        config = load_config()
+        for family_name, platforms in config.gpu_runner_labels.items():
+            for platform, settings in platforms.items():
+                onboarding = settings.get("onboarding-runners")
+                if onboarding is None:
+                    continue
+                where = f"{family_name}/{platform} onboarding-runners"
+                self.assertEqual(set(onboarding), {"labels", "repositories"}, msg=where)
+                pooled = {
+                    entry["label"]
+                    for key, pool in settings.items()
+                    if key.endswith("-labels")
+                    for entry in pool
+                }
+                self.assertTrue(onboarding["labels"], msg=where)
+                for label in onboarding["labels"]:
+                    self.assertIn(label, pooled, msg=where)
+                    self.assertNotEqual(label, settings.get("test-runs-on"), msg=where)
+                self.assertTrue(onboarding["repositories"], msg=where)
+                for repository in onboarding["repositories"]:
+                    self.assertRegex(repository, r"^[\w.-]+/[\w.-]+$", msg=where)
+
 
 if __name__ == "__main__":
     unittest.main()
