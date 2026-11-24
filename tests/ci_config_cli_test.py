@@ -14,7 +14,7 @@ from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
 from ci_config_api import CONFIG_FILENAME, ConfigError
-from ci_config_cli import main, resolve_build_pool, select_weighted_label
+from ci_config_cli import main, select_weighted_label
 
 # Minimal config exercising every pool precedence rule. Windows deliberately
 # has only "default", mirroring the real config.
@@ -249,18 +249,6 @@ class TestSelectionHelpers(unittest.TestCase):
         labels = [{"label": "a", "weight": 0}, {"label": "b", "weight": 0}]
         with self.assertRaises(ConfigError):
             select_weighted_label(labels, random.Random(1), "t")
-
-    def test_pool_precedence(self):
-        pools = {"default": [], "small": [], "bump": [], "sanitizer": []}
-        self.assertEqual(resolve_build_pool(pools, "small", "asan", set()), "sanitizer")
-        self.assertEqual(
-            resolve_build_pool(pools, "small", "", {"submodule_bump"}), "bump"
-        )
-        self.assertEqual(resolve_build_pool(pools, "small", "", set()), "small")
-        self.assertEqual(resolve_build_pool(pools, "large", "", set()), "default")
-        self.assertEqual(
-            resolve_build_pool({"default": []}, "small", "", set()), "default"
-        )
 
 
 if __name__ == "__main__":
