@@ -48,7 +48,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from ci_config_api import CONFIG_FILENAME, ConfigError, load_config
+from ci_config_api import CONFIG_FILENAME, ConfigError, config_exists, load_config
 
 # "large" is the caller-facing name for the unqualified pool.
 POOL_ALIASES = {"large": "default"}
@@ -267,11 +267,10 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     rng = random.Random(args.seed) if args.seed is not None else random.SystemRandom()
 
-    config_dir = args.config_path or Path(__file__).parent
-    if args.fallback is not None and not (config_dir / CONFIG_FILENAME).exists():
+    if args.fallback is not None and not config_exists(args.config_path):
         # Missing config is expected on forks, where the checkout is skipped.
         print(
-            f"[therock-ci-config] No config at {config_dir}, using fallback: {args.fallback}",
+            f"[therock-ci-config] No {CONFIG_FILENAME} found, using fallback: {args.fallback}",
             file=sys.stderr,
         )
         emit(args.fallback, args.output, args.name)
