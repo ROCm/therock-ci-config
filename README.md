@@ -32,6 +32,64 @@ runners = config.build_runners
 labels = config.get_gpu_runner_labels()
 ```
 
+## CLI
+
+For consumers that are not already Python scripts, `ci_config_cli.py` resolves a
+label without importing the API:
+
+```bash
+python ci-config/ci_config_cli.py build-runner --platform=linux --pool=small
+# az-linux-scale-rocm-small-prod
+
+python ci-config/ci_config_cli.py gpu-runner --family=gfx94x --platform=linux
+# linux-gfx942-1gpu-ccs-csp-ossci-rocm
+```
+
+GitHub evaluates `runs-on` before allocating a runner, so a job cannot resolve
+its own label. Run this in a prior job and pass the result forward:
+
+```yaml
+jobs:
+  resolve:
+    runs-on: ubuntu-26.04
+    outputs:
+      runner: ${{ steps.pick.outputs.label }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ROCm/therock-ci-config
+          path: ci-config
+        continue-on-error: true
+      - id: pick
+        run: |
+          python ci-config/ci_config_cli.py build-runner \
+            --platform=linux --pool=small \
+            --output=github --fallback=ubuntu-26.04
+
+  build:
+    needs: resolve
+    runs-on: ${{ needs.resolve.outputs.runner }}
+```
+
+### Options
+
+| Flag | Description |
+|------|-------------|
+| `--platform` | `linux` or `windows` |
+| `--pool` | `default`/`large`, `small`, `medium`, `bump`, `sanitizer`. Falls back to `default` if the platform lacks the pool |
+| `--variant` | Build variant; anything containing `san` uses the sanitizer pool |
+| `--trigger` | Repeatable; `submodule_bump` uses the bump pool |
+| `--output` | `plain` (stdout), `github` (appends to `$GITHUB_OUTPUT`), `json` |
+| `--name` | Output key for `github`/`json` (default `label`) |
+| `--seed` | Reproducible weighted pick; otherwise random per invocation |
+| `--fallback` | Label to emit when the config is **absent** (forks skipping the checkout). A **malformed** config still fails |
+
+Pool precedence matches TheRock's `select_build_runner` so the two cannot drift:
+sanitizer beats bump, bump beats the requested pool.
+
+Exit codes: `0` resolved (or fallback used), `1` malformed config or unknown
+platform/family/pool.
+
 ## API Reference
 
 ```python
